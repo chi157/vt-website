@@ -1,0 +1,116 @@
+
+:root {
+  color-scheme: light;
+  --bg: #0a1833; /* 星空深藍 */
+  --card: #1a2950; /* 較亮的藍紫 */
+  --text: #eaf6ff; /* 雲層上的亮白 */
+  --muted: #7ea7d6; /* 柔和藍 */
+  --primary: #3a7bd5; /* 主色亮藍 */
+  --shadow: 0 18px 40px rgba(10, 24, 51, 0.25);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Noto Sans TC", system-ui, -apple-system, sans-serif;
+  background: linear-gradient(180deg, #0a1833 0%, #233a5e 60%, #4e6fae 100%);
+  background-image:
+    radial-gradient(ellipse at 60% 20%, #fff 0%, #eaf6ff 40%, transparent 70%), /* 雲層1 */
+    radial-gradient(ellipse at 30% 40%, #eaf6ff 0%, #b3d1f7 60%, transparent 80%), /* 雲層2 */
+    linear-gradient(180deg, #0a1833 0%, #233a5e 60%, #4e6fae 100%);
+  color: var(--text);
+}
+
+.page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px 40px;
+}
+
+.card {
+  width: min(420px, 92vw);
+  background: linear-gradient(180deg, #233a5e 0%, #2e4372 100%);
+  border-radius: 28px;
+  padding: 28px 22px 32px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 22px;
+  border: 1.5px solid #3a7bd5;
+}
+
+.hero {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.hero-image {
+  width: clamp(160px, 45vw, 220px);
+  aspect-ratio: 1 / 1;
+  border-radius: 24px;
+  background-image: url("logo1.png");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 14px 30px rgba(58, 123, 213, 0.25);
+  border: 2px solid #7ea7d6;
+  background-color: #233a5e;
+}
+
+.name {
+  margin: 0;
+  font-size: clamp(22px, 4vw, 28px);
+}
+
+.buttons {
+  display: grid;
+  gap: 12px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #3a7bd5 0%, #233a5e 100%);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  border: 1.5px solid #7ea7d6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(58, 123, 213, 0.12);
+}
+
+.btn-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  border-color: #eaf6ff;
+  box-shadow: 0 10px 24px rgba(58, 123, 213, 0.18);
+  background: linear-gradient(90deg, #233a5e 0%, #3a7bd5 100%);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 22px 16px 26px;
+  }
+
+  .btn {
+    padding: 12px 14px;
+  }
+
+  .btn-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
