@@ -17,12 +17,14 @@
 body {
   margin: 0;
   font-family: "Segoe UI", "Noto Sans TC", system-ui, -apple-system, sans-serif;
-  background: linear-gradient(180deg, #0a1833 0%, #233a5e 60%, #4e6fae 100%);
+  /* 夜空漸層 + 雲朵光暈 */
   background-image:
-    radial-gradient(ellipse at 60% 20%, #fff 0%, #eaf6ff 40%, transparent 70%), /* 雲層1 */
-    radial-gradient(ellipse at 30% 40%, #eaf6ff 0%, #b3d1f7 60%, transparent 80%), /* 雲層2 */
-    linear-gradient(180deg, #0a1833 0%, #233a5e 60%, #4e6fae 100%);
+    radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.04) 0%, transparent 35%),
+    radial-gradient(ellipse at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 40%),
+    linear-gradient(180deg, #071022 0%, #0f2a4d 40%, #27486f 75%, #3b6296 100%);
+  background-blend-mode: screen, screen, normal;
   color: var(--text);
+  min-height: 100svh;
 }
 
 .page {
@@ -30,6 +32,7 @@ body {
   display: grid;
   place-items: center;
   padding: 24px 16px 40px;
+  position: relative;
 }
 
 .card {
@@ -41,6 +44,8 @@ body {
   display: grid;
   gap: 22px;
   border: 1.5px solid #3a7bd5;
+  position: relative;
+  z-index: 3;
 }
 
 .hero {
@@ -59,6 +64,117 @@ body {
   box-shadow: 0 14px 30px rgba(58, 123, 213, 0.25);
   border: 2px solid #7ea7d6;
   background-color: #233a5e;
+}
+
+/* Stars layer - now handled by JS */
+/* body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+  background-image:
+    radial-gradient(circle at 8% 12%, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0) 2px),
+    radial-gradient(circle at 72% 28%, rgba(255,255,255,0.8) 0px, rgba(255,255,255,0) 3px),
+    radial-gradient(circle at 40% 70%, rgba(255,255,255,0.85) 0px, rgba(255,255,255,0) 1.8px);
+  background-repeat: no-repeat;
+  background-position: 8% 12%, 72% 28%, 40% 70%;
+  background-size: 220px 220px, 160px 160px, 120px 120px;
+  opacity: 0.6;
+  animation: twinkle 4s linear infinite;
+} */
+
+/* Soft moving clouds */
+body::after {
+  content: "";
+  position: fixed;
+  left: -20%;
+  right: -20%;
+  top: -10%;
+  bottom: 30%;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.10) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 50%, rgba(255,255,255,0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+  filter: blur(28px);
+  transform: translateX(-8%);
+  animation: cloudsMove 90s linear infinite alternate;
+}
+
+/* Moon — positioned relative to .page so remains near card */
+/* removed moon per user request */
+
+/* Image clouds from files (move to the right) */
+/* Image clouds are now DOM elements animated via JS */
+.cloud {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-size: contain;
+  will-change: transform, opacity;
+}
+
+.cloud.cloud--1 {
+  width: 64vw;
+  height: 32vh;
+  background-image: url("cloud1.png");
+  opacity: 0.18;
+  filter: blur(2px) saturate(105%);
+}
+
+.cloud.cloud--2 {
+  width: 56vw;
+  height: 30vh;
+  background-image: url("cloud2.png");
+  opacity: 0.14;
+  filter: blur(3px) saturate(100%);
+}
+
+.cloud.cloud--3 {
+  width: 50vw;
+  height: 25vh;
+  background-image: url("cloud1.png");
+  opacity: 0.12;
+  filter: blur(1px) saturate(110%);
+}
+
+.cloud.cloud--4 {
+  width: 45vw;
+  height: 28vh;
+  background-image: url("cloud2.png");
+  opacity: 0.16;
+  filter: blur(2px) saturate(95%);
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.85; }
+  50% { opacity: 1; }
+  100% { opacity: 0.85; }
+}
+
+@keyframes cloudsMove {
+  0% { transform: translateX(-12%); }
+  100% { transform: translateX(12%); }
+}
+
+@keyframes floatMoon {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes cloudMove1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(180%); }
+}
+
+@keyframes cloudMove2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(200%); }
 }
 
 .name {
@@ -91,6 +207,8 @@ body {
 .btn-icon {
   width: 22px;
   height: 22px;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
 }
 
 .btn:hover {
