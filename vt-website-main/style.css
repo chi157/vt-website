@@ -508,6 +508,37 @@ body::after {
   color: var(--text);
 }
 
+/* 程式碼區塊樣式 - 禁止複製 */
+.code-block {
+  background: rgba(58, 123, 213, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #eaf6ff;
+  border: 1px solid rgba(126, 167, 214, 0.25);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  display: inline;
+}
+
+.code-inline {
+  background: rgba(58, 123, 213, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #eaf6ff;
+  border: 1px solid rgba(126, 167, 214, 0.25);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  white-space: nowrap;
+}
+
 .bank-info {
   background: linear-gradient(135deg, rgba(58, 123, 213, 0.2), rgba(46, 67, 114, 0.4));
   border: 1.5px solid #7ea7d6;
