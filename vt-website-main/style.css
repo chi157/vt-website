@@ -48,6 +48,21 @@ body {
   z-index: 3;
 }
 
+/* 平板和電腦版：增加卡片寬度 */
+@media (min-width: 768px) {
+  .card {
+    width: min(900px, 85vw);
+    padding: 36px 40px 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    width: min(1000px, 80vw);
+    padding: 40px 50px 45px;
+  }
+}
+
 .hero {
   display: grid;
   justify-items: center;
