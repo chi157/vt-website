@@ -36,7 +36,7 @@ body {
 }
 
 .card {
-  width: min(420px, 92vw);
+  width: min(550px, 92vw);
   background: linear-gradient(180deg, #233a5e 0%, #2e4372 100%);
   border-radius: 28px;
   padding: 28px 22px 32px;
@@ -58,7 +58,7 @@ body {
   width: clamp(160px, 45vw, 220px);
   aspect-ratio: 1 / 1;
   border-radius: 24px;
-  background-image: url("logo1.png");
+  background-image: url("logo1.jpg");
   background-size: cover;
   background-position: center;
   box-shadow: 0 14px 30px rgba(58, 123, 213, 0.25);
@@ -218,6 +218,70 @@ body::after {
   background: linear-gradient(90deg, #233a5e 0%, #3a7bd5 100%);
 }
 
+.btn-highlight {
+  background: linear-gradient(90deg, #d4a853 0%, #f0c674 50%, #d4a853 100%);
+  border: 1.5px solid #f0c674;
+  color: #1a2950;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(212, 168, 83, 0.3);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.btn-highlight:hover {
+  background: linear-gradient(90deg, #f0c674 0%, #d4a853 50%, #f0c674 100%);
+  border-color: #fff;
+  box-shadow: 0 12px 32px rgba(212, 168, 83, 0.4);
+  color: #0a1833;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(212, 168, 83, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(240, 198, 116, 0.5);
+  }
+}
+
+.btn-paypal {
+  background: linear-gradient(90deg, #0070ba 0%, #00457c 100%);
+  border: 1.5px solid #00a1e0;
+  font-weight: 700;
+}
+
+.btn-paypal:hover {
+  background: linear-gradient(90deg, #00457c 0%, #0070ba 100%);
+  border-color: #00c9ff;
+  box-shadow: 0 10px 24px rgba(0, 112, 186, 0.3);
+}
+
+.btn-home {
+  background: linear-gradient(90deg, #a855f7 0%, #7c3aed 100%);
+  border: 1.5px solid #c084fc;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+}
+
+.btn-home:hover {
+  background: linear-gradient(90deg, #7c3aed 0%, #a855f7 100%);
+  border-color: #e9d5ff;
+  box-shadow: 0 10px 24px rgba(168, 85, 247, 0.5);
+}
+
+.cute-note {
+  background: linear-gradient(135deg, rgba(240, 198, 116, 0.2), rgba(212, 168, 83, 0.15));
+  border: 1.5px dashed #f0c674;
+  text-align: center;
+}
+
+.note-text {
+  margin: 0;
+  font-size: clamp(15px, 3.5vw, 17px);
+  font-weight: 600;
+  color: #f0c674;
+  line-height: 1.6;
+}
+
 @media (max-width: 480px) {
   .card {
     padding: 22px 16px 26px;
@@ -230,5 +294,279 @@ body::after {
   .btn-icon {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* Donate page styles */
+.donate-info {
+  display: grid;
+  gap: 20px;
+}
+
+.donate-title {
+  margin: 0 0 8px 0;
+  font-size: clamp(20px, 4vw, 26px);
+  text-align: center;
+  color: var(--text);
+}
+
+.info-section {
+  background: rgba(58, 123, 213, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(126, 167, 214, 0.3);
+}
+
+.section-title {
+  margin: 0 0 12px 0;
+  font-size: clamp(16px, 3.5vw, 20px);
+  color: var(--text);
+}
+
+.rule-list {
+  display: grid;
+  gap: 10px;
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(26, 41, 80, 0.5);
+  border-radius: 8px;
+  font-size: clamp(14px, 3vw, 16px);
+}
+
+.rule-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #3a7bd5, #7ea7d6);
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 14px;
+  color: #fff;
+}
+
+.rule-text {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.rule-text strong {
+  color: #7ea7d6;
+  font-weight: 700;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, rgba(58, 123, 213, 0.25), rgba(126, 167, 214, 0.15));
+  border: 1.5px solid #7ea7d6;
+}
+
+.content-text {
+  margin: 0;
+  font-size: clamp(14px, 3vw, 16px);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, rgba(58, 123, 213, 0.2), rgba(35, 58, 94, 0.3));
+  border: 1.5px solid #3a7bd5;
+  text-align: center;
+}
+
+.cta-text {
+  margin: 0 0 12px 0;
+  font-size: clamp(16px, 3.5vw, 18px);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.bank-info {
+  background: linear-gradient(135deg, rgba(58, 123, 213, 0.2), rgba(46, 67, 114, 0.4));
+  border: 1.5px solid #7ea7d6;
+}
+
+.bank-account {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(26, 41, 80, 0.6);
+  border-radius: 8px;
+  font-size: clamp(15px, 3.5vw, 18px);
+}
+
+.account-label {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.account-number {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: 700;
+  color: #7ea7d6;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 480px) {
+  .donate-info {
+    gap: 16px;
+  }
+  
+  .info-section {
+    padding: 14px;
+  }
+  
+  .rule-item {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .rule-icon {
+    min-width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}
+
+/* Profile section styles */
+.profile-section {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-title {
+  margin: 0;
+  font-size: clamp(20px, 4vw, 24px);
+  text-align: center;
+  color: var(--text);
+  padding-bottom: 8px;
+}
+
+.profile-info {
+  background: rgba(58, 123, 213, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(126, 167, 214, 0.3);
+  display: grid;
+  gap: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(26, 41, 80, 0.4);
+  border-radius: 8px;
+  font-size: clamp(14px, 3vw, 16px);
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--muted);
+  min-width: 80px;
+}
+
+.info-value {
+  color: var(--text);
+  text-align: right;
+  flex: 1;
+}
+
+.profile-description {
+  background: linear-gradient(135deg, rgba(58, 123, 213, 0.25), rgba(126, 167, 214, 0.15));
+  border: 1.5px solid #7ea7d6;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+
+.description-text {
+  margin: 0;
+  font-size: clamp(15px, 3.5vw, 17px);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.profile-interests,
+.profile-streaming {
+  background: rgba(58, 123, 213, 0.12);
+  border-radius: 10px;
+  padding: 12px 16px;
+  border: 1px solid rgba(126, 167, 214, 0.25);
+}
+
+.interest-title,
+.streaming-title {
+  margin: 0 0 8px 0;
+  font-size: clamp(16px, 3.5vw, 18px);
+  color: var(--text);
+}
+
+.interest-text,
+.streaming-text {
+  margin: 0;
+  font-size: clamp(14px, 3vw, 16px);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .profile-section {
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .profile-info {
+    padding: 14px;
+  }
+  
+  .info-row {
+    padding: 6px 10px;
+  }
+  
+  .info-label {
+    min-width: 70px;
+  }
+}
+
+/* PayPal container styles */
+.paypal-wrapper {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.paypal-wrapper input[type="text"],
+.paypal-wrapper input[type="number"],
+.paypal-wrapper input {
+  color: #1a2950 !important;
+  background-color: #fff !important;
+  border: 1px solid #ccc !important;
+  padding: 8px !important;
+  font-size: 16px !important;
+}
+
+.paypal-wrapper input:focus {
+  border-color: #3a7bd5 !important;
+  outline: none !important;
+}
+
+@media (max-width: 480px) {
+  .paypal-wrapper {
+    padding: 16px;
+    max-width: 100%;
   }
 }
