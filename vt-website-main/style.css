@@ -303,6 +303,29 @@ body::after {
   box-shadow: 0 2px 8px rgba(58, 123, 213, 0.12);
 }
 
+.btn-with-note {
+  padding: 12px 18px;
+}
+
+.btn-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
+.btn-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-subtitle {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.85;
+  font-style: italic;
+}
+
 .btn-icon {
   width: 22px;
   height: 22px;
