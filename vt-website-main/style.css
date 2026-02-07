@@ -11,6 +11,13 @@
   --navbar-height: 70px;
 }
 
+/* 手機版較小的導航欄高度 */
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 56px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -89,6 +96,13 @@ body::after {
   place-items: center;
   padding: 24px 16px 40px;
   position: relative;
+}
+
+/* 手機版增加上方間距，避免導航欄遮擋 */
+@media (max-width: 768px) {
+  .page {
+    padding-top: 60px;
+  }
 }
 
 .card {
@@ -774,10 +788,15 @@ body::after {
 /* 響應式設計 - 手機 */
 @media (max-width: 480px) {
   .navbar-logo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .navbar-container {
-    padding: 0 15px;
+    padding: 0 12px;
+  }
+  
+  .navbar-link {
+    padding: 0.75rem;
+    font-size: 0.95rem;
   }
 }
