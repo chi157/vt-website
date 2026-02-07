@@ -90,10 +90,10 @@
       document.body.appendChild(newCloud);
       // 隨機樣式
       const styles = [
-        {widthPercent: 64, heightPercent: 32, yJitter: 6, bg: 'cloud1.png', opacity: 0.18, filter: 'blur(2px) saturate(105%)'},
-        {widthPercent: 56, heightPercent: 30, yJitter: 10, bg: 'cloud2.png', opacity: 0.14, filter: 'blur(3px) saturate(100%)'},
-        {widthPercent: 50, heightPercent: 25, yJitter: 8, bg: 'cloud1.png', opacity: 0.12, filter: 'blur(1px) saturate(110%)'},
-        {widthPercent: 45, heightPercent: 28, yJitter: 12, bg: 'cloud2.png', opacity: 0.16, filter: 'blur(2px) saturate(95%)'}
+        {widthPercent: 64, heightPercent: 32, yJitter: 6, bg: 'images/cloud1.png', opacity: 0.18, filter: 'blur(2px) saturate(105%)'},
+        {widthPercent: 56, heightPercent: 30, yJitter: 10, bg: 'images/cloud2.png', opacity: 0.14, filter: 'blur(3px) saturate(100%)'},
+        {widthPercent: 50, heightPercent: 25, yJitter: 8, bg: 'images/cloud1.png', opacity: 0.12, filter: 'blur(1px) saturate(110%)'},
+        {widthPercent: 45, heightPercent: 28, yJitter: 12, bg: 'images/cloud2.png', opacity: 0.16, filter: 'blur(2px) saturate(95%)'}
       ];
       const style = styles[Math.floor(Math.random() * styles.length)];
       newCloud.style.width = style.widthPercent + 'vw';
