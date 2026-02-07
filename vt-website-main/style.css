@@ -8,6 +8,7 @@
   --primary: #3a7bd5; /* 主色亮藍 */
   --shadow: 0 18px 40px rgba(10, 24, 51, 0.25);
   --radius: 18px;
+  --navbar-height: 70px;
 }
 
 * {
@@ -16,6 +17,7 @@
 
 body {
   margin: 0;
+  padding-top: var(--navbar-height); /* 為導航欄留出空間 */
   font-family: "Segoe UI", "Noto Sans TC", system-ui, -apple-system, sans-serif;
   /* 夜空漸層 + 雲朵光暈 */
   background-image:
@@ -637,5 +639,145 @@ body::after {
   .paypal-wrapper {
     padding: 16px;
     max-width: 100%;
+  }
+}
+
+/* ===== 導航欄樣式 ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  background: rgba(26, 41, 80, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-logo:hover {
+  color: var(--primary);
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.navbar-item {
+  margin: 0;
+}
+
+.navbar-link {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.navbar-link:hover {
+  background: rgba(58, 123, 213, 0.2);
+  color: var(--primary);
+}
+
+/* 漢堡選單按鈕 */
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.navbar-toggle-icon {
+  width: 25px;
+  height: 3px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* 響應式設計 - 平板以下 */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: flex;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background: rgba(26, 41, 80, 0.98);
+    padding: 1rem 0;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .navbar-menu.active {
+    max-height: 300px;
+  }
+
+  .navbar-item {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar-link {
+    padding: 1rem;
+    border-radius: 0;
+  }
+
+  /* 漢堡選單動畫 */
+  .navbar-toggle.active .navbar-toggle-icon:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .navbar-toggle.active .navbar-toggle-icon:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar-toggle.active .navbar-toggle-icon:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* 響應式設計 - 手機 */
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 1.2rem;
+  }
+
+  .navbar-container {
+    padding: 0 15px;
   }
 }
