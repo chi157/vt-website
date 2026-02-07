@@ -106,7 +106,7 @@ body::after {
 }
 
 .card {
-  width: min(550px, 92vw);
+  width: min(850px, 92vw);
   background: linear-gradient(180deg, #233a5e 0%, #2e4372 100%);
   border-radius: 28px;
   padding: 28px 22px 32px;
@@ -116,6 +116,20 @@ body::after {
   border: 1.5px solid #3a7bd5;
   position: relative;
   z-index: 3;
+}
+
+/* 平板尺寸調整 */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .card {
+    width: min(750px, 90vw);
+  }
+}
+
+/* 手機版保持較小寬度 */
+@media (max-width: 768px) {
+  .card {
+    width: min(550px, 92vw);
+  }
 }
 
 .hero {
