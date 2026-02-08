@@ -419,6 +419,84 @@ body::after {
   }
 }
 
+/* 超小手機螢幕優化 (1080px 以下) */
+@media (max-width: 1080px) {
+  .page {
+    padding: 60px 8px 24px;
+  }
+
+  .card {
+    width: 96vw;
+    padding: 18px 12px 20px;
+    gap: 16px;
+    border-radius: 20px;
+  }
+
+  .hero {
+    gap: 10px;
+  }
+
+  .name {
+    font-size: clamp(18px, 5vw, 22px);
+  }
+
+  .title {
+    font-size: clamp(13px, 3.5vw, 15px);
+  }
+
+  .btn {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .code-block {
+    font-size: 13px;
+    padding: 2px 6px;
+  }
+
+  .code-box {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .info-section {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .section-title {
+    font-size: clamp(15px, 4vw, 18px);
+  }
+
+  .donate-title {
+    font-size: clamp(18px, 4.5vw, 22px);
+  }
+
+  .rule-item {
+    padding: 6px;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .navbar-container {
+    padding: 0 8px;
+  }
+
+  .navbar-logo {
+    font-size: 1rem;
+  }
+
+  .navbar-logo-img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .navbar-link {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
 /* Donate page styles */
 .donate-info {
   display: grid;
@@ -847,7 +925,7 @@ body::after {
     width: 100%;
     flex-direction: column;
     background: rgba(26, 41, 80, 0.98);
-    padding: 1rem 0;
+    padding: 0;
     gap: 0;
     max-height: 0;
     overflow: hidden;
@@ -856,6 +934,7 @@ body::after {
 
   .navbar-menu.active {
     max-height: 300px;
+    padding: 1rem 0;
   }
 
   .navbar-item {
@@ -886,6 +965,11 @@ body::after {
 @media (max-width: 480px) {
   .navbar-logo {
     font-size: 1.1rem;
+  }
+  
+  .navbar-logo-img {
+    width: 32px;
+    height: 32px;
   }
 
   .navbar-container {
