@@ -2,10 +2,9 @@
 const TWITCH_CHANNEL = 'chi1577517';
 const TWITCH_VIDEOS_URL = `https://www.twitch.tv/${TWITCH_CHANNEL}/videos?filter=archives&sort=time`;
 
-// 手動填入最近的 VOD ID（暫時方案，直到找到可靠的自動抓取方式）
-// 從 https://www.twitch.tv/chi1577517/videos 複製最新幾個影片的 ID
-const RECENT_VOD_IDS = [
-  '2691280220', // 請定期更新這些 ID
+// 預設 VOD IDs（如果 localStorage 沒有設定的話）
+const DEFAULT_VOD_IDS = [
+  '2691280220',
 ];
 
 function displayTwitchPlayer() {
@@ -14,7 +13,14 @@ function displayTwitchPlayer() {
     return;
   }
 
-  if (RECENT_VOD_IDS.length === 0) {
+  // 優先使用 localStorage 的 VOD ID，沒有的話使用預設值
+  let vodId = DEFAULT_VOD_IDS[0];
+  const savedVOD = localStorage.getItem('twitch_vod_id');
+  if (savedVOD) {
+    vodId = savedVOD;
+  }
+
+  if (!vodId) {
     container.innerHTML = `
       <div style="text-align: center;">
         <p class="content-text" style="opacity: 0.7; margin-bottom: 12px;">目前沒有設定的直播錄影</p>
@@ -33,7 +39,7 @@ function displayTwitchPlayer() {
   }
 
   // 顯示設定的 VOD
-  const vodsHTML = RECENT_VOD_IDS.slice(0, 3).map(vodId => `
+  const vodsHTML = `
     <div style="margin-bottom: 16px;">
       <div style="position: relative; padding-top: 56.25%; border-radius: 12px; overflow: hidden; background: rgba(26, 41, 80, 0.5);">
         <iframe 
@@ -45,7 +51,7 @@ function displayTwitchPlayer() {
         </iframe>
       </div>
     </div>
-  `).join('');
+  `;
   
   container.innerHTML = `
     <div style="display: grid; gap: 16px;">

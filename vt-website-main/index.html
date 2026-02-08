@@ -3,11 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>柒柒 chi 首頁</title>
     <link rel="icon" type="image/png" href="images/頭貼%20-%20圓形.png" />
     <link rel="stylesheet" href="style.css" />
     <script src="navbar.js" defer></script>
     <script src="twitch-vods.js" defer></script>
+    <script src="carousel.js" defer></script>
   </head>
   <body>
     <!-- 導航欄將由 navbar.js 載入 -->
@@ -20,7 +24,7 @@
         <header class="hero">
           <div class="hero-image" role="img" aria-label="個人形象圖"></div>
           <h2 class="name">柒柒 chi</h2>
-          <p class="title">雪角鴞 VTuber ｜ 程式設計教學</p>
+          <p class="title">雪角鴞 VTuber ｜ 程式設計教學 | 遊戲直播</p>
         </header>
 
         <section class="buttons" aria-label="導航連結">
@@ -28,6 +32,11 @@
             <h3 class="section-title">👋 歡迎來到我的小天地</h3>
             <p class="content-text">嗨！我是柒柒，一隻會寫程式的雪角鴞 🦉</p>
             <p class="content-text" style="margin-top: 10px;">這裡有程式教學、直播互動，還有許多有趣的內容等你探索！</p>
+          </div>
+
+          <div class="info-section">
+            <h3 class="section-title">🎉 最新活動</h3>
+            <div id="event-carousel-container" style="margin-top: 12px;"></div>
           </div>
 
           <div class="info-section">
