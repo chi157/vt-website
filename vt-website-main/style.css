@@ -101,7 +101,7 @@ body::after {
 /* 手機版增加上方間距，避免導航欄遮擋 */
 @media (max-width: 768px) {
   .page {
-    padding-top: 60px;
+    padding-top: 58px;
   }
 }
 
@@ -422,7 +422,7 @@ body::after {
 /* 超小手機螢幕優化 (1080px 以下) */
 @media (max-width: 1080px) {
   .page {
-    padding: 60px 8px 24px;
+    padding: 58px 8px 24px;
   }
 
   .card {
