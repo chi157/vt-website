@@ -93,12 +93,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label" for="password">密碼（至少 6 個字元）</label>
-                    <input type="password" id="password" name="password" class="form-input" required>
+                    <div style="position: relative;">
+                        <input type="password" id="password" name="password" class="form-input" style="padding-right: 50px;" required>
+                        <button type="button" id="toggle-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            👁️
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="confirm_password">確認密碼</label>
-                    <input type="password" id="confirm_password" name="confirm_password" class="form-input" required>
+                    <div style="position: relative;">
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input" style="padding-right: 50px;" required>
+                        <button type="button" id="toggle-confirm-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            👁️
+                        </button>
+                    </div>
                 </div>
                 
                 <button type="submit" class="form-button">註冊</button>
@@ -112,5 +122,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
     
     <script src="script.js"></script>
+    <script>
+        // 密碼顯示/隱藏切換
+        const passwordInput = document.getElementById('password');
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        
+        togglePasswordBtn.addEventListener('click', function() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePasswordBtn.textContent = '👁️‍🗨️';
+            } else {
+                passwordInput.type = 'password';
+                togglePasswordBtn.textContent = '👁️';
+            }
+        });
+        
+        // 確認密碼顯示/隱藏切換
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password');
+        
+        toggleConfirmPasswordBtn.addEventListener('click', function() {
+            if (confirmPasswordInput.type === 'password') {
+                confirmPasswordInput.type = 'text';
+                toggleConfirmPasswordBtn.textContent = '👁️‍🗨️';
+            } else {
+                confirmPasswordInput.type = 'password';
+                toggleConfirmPasswordBtn.textContent = '👁️';
+            }
+        });
+    </script>
 </body>
 </html>
