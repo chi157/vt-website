@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $user['id'],
                     $user['username'],
                     $user['email'],
-                    $user['phone'], 
-                    $user['recipient_name'], 
+                    $phone,
+                    $recipient_name,
                     $store_name,
                     $store_address,
                     $quantity,
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label" for="phone">聯絡電話 *</label>
-                    <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone']); ?>" readonly required>
+                    <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" readonly required>
                 </div>
                 
                 <div class="form-group">

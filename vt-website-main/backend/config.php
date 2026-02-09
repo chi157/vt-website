@@ -48,13 +48,29 @@ function isAdmin() {
 
 // 取得當前使用者資訊
 function getCurrentUser() {
+    global $pdo;
+    
     if (!isLoggedIn()) {
         return null;
     }
+    
+    try {
+        $stmt = $pdo->prepare("SELECT id, username, email, phone FROM users WHERE id = ?");
+        $stmt->execute([$_SESSION['user_id']]);
+        $user = $stmt->fetch();
+        
+        if ($user) {
+            return $user;
+        }
+    } catch (PDOException $e) {
+        // 如果查詢失敗，返回 Session 中的基本資訊
+    }
+    
     return [
         'id' => $_SESSION['user_id'],
         'username' => $_SESSION['username'],
-        'email' => $_SESSION['email'] ?? ''
+        'email' => $_SESSION['email'] ?? '',
+        'phone' => ''
     ];
 }
 
