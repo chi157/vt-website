@@ -178,6 +178,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 document.querySelector('.file-upload p').textContent = '✅ ' + fileName;
             }
         });
+        
+        // 表单验证
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const storeName = document.getElementById('store_name').value.trim();
+            const storeAddress = document.getElementById('store_address').value.trim();
+            const quantity = document.getElementById('quantity').value;
+            const paymentProof = document.getElementById('payment_proof').files.length;
+            
+            let errorMsg = '';
+            
+            if (!storeName) {
+                errorMsg = '請填寫 7-11 門市名稱';
+            } else if (!storeAddress) {
+                errorMsg = '請填寫 7-11 門市地址';
+            } else if (!quantity || quantity < 1) {
+                errorMsg = '請填寫數量（至少為 1）';
+            } else if (paymentProof === 0) {
+                errorMsg = '請上傳付款證明截圖';
+            }
+            
+            if (errorMsg) {
+                e.preventDefault();
+                alert('❌ ' + errorMsg);
+                return false;
+            }
+        });
     </script>
 </body>
 </html>
