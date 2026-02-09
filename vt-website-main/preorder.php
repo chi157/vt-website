@@ -100,8 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <form method="POST" action="" enctype="multipart/form-data" novalidate>
+                <div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid #60a5fa; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px;">
+                    <p style="color: #93c5fd; font-size: 14px; margin: 0;">
+                        💡 <strong>提示：</strong>如需修改訂購人姓名或電話，請前往【<a href="profile.php" style="color: #60a5fa; text-decoration: underline;">個人資料</a>】頁面修改
+                    </p>
+                </div>
+                
                 <div class="form-group">
-                    <label class="form-label" for="recipient_name">收件人姓名 *</label>
+                    <label class="form-label" for="recipient_name">訂購人姓名 *</label>
                     <input type="text" id="recipient_name" name="recipient_name" class="form-input" value="<?php echo htmlspecialchars($user['username']); ?>" readonly required>
                 </div>
                 
