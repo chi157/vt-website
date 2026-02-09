@@ -38,18 +38,8 @@ if (!isAdmin()) {
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>管理員登入</title>
         <link rel="stylesheet" href="style.css">
-        <style>
-            body { background: linear-gradient(135deg, #1a2950 0%, #0f172a 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-            .login-box { background: rgba(26, 41, 80, 0.8); padding: 40px; border-radius: 16px; max-width: 400px; width: 100%; }
-            .login-title { color: #7dd3fc; font-size: 24px; margin-bottom: 24px; text-align: center; }
-            .form-group { margin-bottom: 20px; }
-            .form-label { display: block; color: #7dd3fc; font-size: 14px; margin-bottom: 8px; }
-            .form-input { width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(125, 211, 252, 0.3); border-radius: 8px; color: white; box-sizing: border-box; }
-            .form-button { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
-            .form-error { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
-        </style>
     </head>
-    <body>
+    <body class="admin-login-body">
         <div class="login-box">
             <h1 class="login-title">🔐 管理員登入</h1>
             <?php if ($error): ?>
@@ -126,40 +116,8 @@ $stats = $pdo->query("
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>訂單管理後台</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body { background: linear-gradient(135deg, #1a2950 0%, #0f172a 100%); min-height: 100vh; padding: 20px; }
-        .admin-container { max-width: 1400px; margin: 0 auto; }
-        .admin-header { background: rgba(26, 41, 80, 0.8); padding: 24px; border-radius: 12px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-title { color: #7dd3fc; font-size: 28px; margin: 0; }
-        .logout-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: rgba(26, 41, 80, 0.8); padding: 20px; border-radius: 12px; text-align: center; }
-        .stat-label { color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 8px; }
-        .stat-value { color: #7dd3fc; font-size: 32px; font-weight: 600; }
-        .filter-bar { background: rgba(26, 41, 80, 0.8); padding: 16px; border-radius: 12px; margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
-        .filter-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(125, 211, 252, 0.3); background: rgba(15, 23, 42, 0.6); color: white; text-decoration: none; font-size: 14px; }
-        .filter-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: transparent; }
-        .orders-table { background: rgba(26, 41, 80, 0.8); border-radius: 12px; overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(15, 23, 42, 0.6); color: #7dd3fc; padding: 16px; text-align: left; font-size: 14px; }
-        td { padding: 16px; border-top: 1px solid rgba(125, 211, 252, 0.1); color: rgba(255, 255, 255, 0.9); font-size: 14px; }
-        tr:hover { background: rgba(125, 211, 252, 0.05); }
-        .status-badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .status-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24; }
-        .status-confirmed { background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid #3b82f6; }
-        .status-shipped { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; border: 1px solid #8b5cf6; }
-        .status-completed { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid #22c55e; }
-        .status-cancelled { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
-        .status-select { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(125, 211, 252, 0.3); color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; }
-        .update-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-left: 8px; }
-        .view-img { color: #7dd3fc; text-decoration: none; font-size: 13px; }
-        @media (max-width: 768px) {
-            .orders-table { overflow-x: auto; }
-            table { min-width: 1000px; }
-        }
-    </style>
 </head>
-<body>
+<body class="admin-body">
     <div class="admin-container">
         <div class="admin-header">
             <h1 class="admin-title">📊 訂單管理後台</h1>

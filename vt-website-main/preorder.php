@@ -71,136 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/png" href="images/頭貼%20-%20圓形.png">
     <link rel="stylesheet" href="style.css">
     <script src="navbar.js" defer></script>
-    <style>
-        .form-container {
-            max-width: 700px;
-            margin: 80px auto 40px;
-            padding: 24px;
-        }
-        .form-card {
-            background: rgba(26, 41, 80, 0.6);
-            border-radius: 16px;
-            padding: 32px;
-            backdrop-filter: blur(10px);
-        }
-        .form-title {
-            color: #7dd3fc;
-            font-size: 24px;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        .user-info {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-label {
-            display: block;
-            color: #7dd3fc;
-            font-size: 14px;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .form-input, .form-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(125, 211, 252, 0.3);
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        .form-input:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #7dd3fc;
-            box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.1);
-        }
-        .form-error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .form-success {
-            background: rgba(34, 197, 94, 0.2);
-            border: 1px solid #22c55e;
-            color: #6ee7b7;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .form-button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .form-button:hover {
-            transform: translateY(-2px);
-        }
-        .price-info {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
-            border: 2px solid rgba(34, 197, 94, 0.4);
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-        .price-info p {
-            color: #6ee7b7;
-            font-size: 16px;
-            margin: 4px 0;
-        }
-        .total-price {
-            font-size: 24px !important;
-            font-weight: 600;
-            color: #34d399 !important;
-        }
-        .file-upload {
-            border: 2px dashed rgba(125, 211, 252, 0.3);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .file-upload:hover {
-            border-color: #7dd3fc;
-            background: rgba(125, 211, 252, 0.05);
-        }
-        .file-upload input {
-            display: none;
-        }
-        .logout-link {
-            text-align: center;
-            margin-top: 16px;
-        }
-        .logout-link a {
-            color: #7dd3fc;
-            text-decoration: none;
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
     <div class="cloud cloud--1" aria-hidden="true"></div>
@@ -208,7 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="cloud cloud--3" aria-hidden="true"></div>
     <div class="cloud cloud--4" aria-hidden="true"></div>
     
-    <div class="form-container">
+    <main class="page">
+        <div class="form-container">
         <div class="form-card">
             <h1 class="form-title">🔑 鑰匙圈預購表單</h1>
             <div class="user-info">
@@ -277,6 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+    </main>
     
     <script src="script.js"></script>
     <script>
