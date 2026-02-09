@@ -97,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="price-info">
                 <p>鑰匙圈價格：NT$ 100 / 個</p>
                 <p>運費（7-11 賣貨便）：NT$ 60</p>
-                <p class="total-price">每筆訂單總計：NT$ 160</p>
             </div>
             
             <form method="POST" action="" enctype="multipart/form-data">
@@ -126,6 +125,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="number" id="quantity" name="quantity" class="form-input" min="1" value="1" required>
                 </div>
                 
+                <div class="price-info" style="margin-bottom: 24px;">
+                    <p style="font-size: 16px; margin: 4px 0;">計算：<span id="quantity-display">1</span> × NT$ 100 + 運費 NT$ 60</p>
+                    <p class="total-price">總金額：NT$ <span id="total-price">160</span></p>
+                </div>
+                
                 <div class="form-group">
                     <label class="form-label">LINE Pay 付款證明 * (請上傳截圖)</label>
                     <div class="file-upload" onclick="document.getElementById('payment_proof').click()">
@@ -152,6 +156,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <script src="script.js"></script>
     <script>
+        // 更新总金额计算
+        function updateTotalPrice() {
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const unitPrice = 100;
+            const shippingFee = 60;
+            const total = (quantity * unitPrice) + shippingFee;
+            
+            document.getElementById('quantity-display').textContent = quantity;
+            document.getElementById('total-price').textContent = total;
+        }
+        
+        // 监听数量变化
+        document.getElementById('quantity').addEventListener('input', updateTotalPrice);
+        document.getElementById('quantity').addEventListener('change', updateTotalPrice);
+        
+        // 文件上传提示
         document.getElementById('payment_proof').addEventListener('change', function(e) {
             const fileName = e.target.files[0]?.name;
             if (fileName) {
