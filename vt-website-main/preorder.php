@@ -132,9 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label">LINE Pay 付款證明 * (請上傳截圖)</label>
-                    <div class="file-upload" onclick="document.getElementById('payment_proof').click()">
+                    <div class="file-upload" id="file-upload-area" onclick="document.getElementById('payment_proof').click()">
                         <p style="color: #7dd3fc; margin-bottom: 8px;">📷 點擊上傳圖片</p>
                         <p style="color: rgba(255,255,255,0.6); font-size: 13px;">支援 JPG、PNG 格式，最大 5MB</p>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 4px;">或直接將圖片拖曳到此處</p>
                         <input type="file" id="payment_proof" name="payment_proof" accept="image/jpeg,image/png,image/jpg" required>
                     </div>
                 </div>
@@ -184,6 +185,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 document.querySelector('.file-upload p').textContent = '✅ ' + fileName;
             }
         });
+        
+        // 拖放文件上传功能
+        const uploadArea = document.getElementById('file-upload-area');
+        const fileInput = document.getElementById('payment_proof');
+        
+        // 阻止默认拖放行为
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        // 拖动时添加高亮效果
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight(e) {
+            uploadArea.style.borderColor = '#60a5fa';
+            uploadArea.style.background = 'rgba(59, 130, 246, 0.1)';
+        }
+        
+        function unhighlight(e) {
+            uploadArea.style.borderColor = '';
+            uploadArea.style.background = '';
+        }
+        
+        // 处理文件拖放
+        uploadArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                const file = files[0];
+                
+                // 检查文件类型
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('❌ 請上傳 JPG 或 PNG 格式的圖片');
+                    return;
+                }
+                
+                // 检查文件大小 (5MB)
+                if (file.size > 5242880) {
+                    alert('❌ 檔案大小超過 5MB，請選擇較小的圖片');
+                    return;
+                }
+                
+                // 将文件赋值给 input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                
+                // 显示文件名
+                document.querySelector('.file-upload p').textContent = '✅ ' + file.name;
+            }
+        }
         
         // 表单验证 - 提交前检查
         document.querySelector('form').addEventListener('submit', function(e) {
