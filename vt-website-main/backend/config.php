@@ -1,4 +1,12 @@
 <?php
+// Session 設定必須在 session_start() 之前
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_secure', 1); // HTTPS 使用
+    session_start();
+}
+
 // 檢查是否有本地配置文件（包含真實憑證）
 if (file_exists(__DIR__ . '/config.local.php')) {
     require_once __DIR__ . '/config.local.php';
@@ -10,12 +18,13 @@ if (file_exists(__DIR__ . '/config.local.php')) {
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'vt_website');
     define('DB_USER', 'root');
-    define('DB_PASS', '');  // 請在 config.local.php 中設定
+    define('DB_PASS', '123456789');
     define('DB_CHARSET', 'utf8mb4');
     
     // 網站設定  
     define('SITE_URL', 'https://vtwebsite.chi157.com');
     define('UPLOAD_DIR', __DIR__ . '/../uploads/');
+    define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
     
     // Google OAuth 設定
     // 請到 https://console.cloud.google.com/ 建立 OAuth 2.0 憑證
@@ -24,11 +33,6 @@ if (file_exists(__DIR__ . '/config.local.php')) {
     define('GOOGLE_CLIENT_SECRET', 'YOUR_GOOGLE_CLIENT_SECRET');
     define('GOOGLE_REDIRECT_URI', SITE_URL . '/google-callback.php');
 }
-
-// Session 設定
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 1); // HTTPS 使用
 
 // 建立資料庫連線
 try {
@@ -44,11 +48,6 @@ try {
     );
 } catch (PDOException $e) {
     die("資料庫連線失敗: " . $e->getMessage());
-}
-
-// 啟動 Session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
 }
 
 // 檢查是否登入

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once 'backend/config.php';
 
 $isLoggedIn = isLoggedIn();
@@ -30,7 +29,7 @@ if ($isLoggedIn) {
       
       <?php if ($isLoggedIn): ?>
       <!-- 已登入：顯示個人資料和登出 -->
-      <li class="navbar-item"><a href="profile.php" class="navbar-link">👤 個人資料</a></li>
+      <li class="navbar-item"><a href="profile.php" class="navbar-link">個人資料</a></li>
       <li class="navbar-item"><a href="logout.php" class="navbar-link">登出 (<?php echo htmlspecialchars($username); ?>)</a></li>
       <?php else: ?>
       <!-- 未登入：顯示登入和註冊 -->
