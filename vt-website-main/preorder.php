@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>運費（7-11 賣貨便）：NT$ 60</p>
             </div>
             
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="" enctype="multipart/form-data" novalidate>
                 <div class="form-group">
                     <label class="form-label" for="recipient_name">收件人姓名 *</label>
                     <input type="text" id="recipient_name" name="recipient_name" class="form-input" value="<?php echo htmlspecialchars($user['username']); ?>" readonly required>
@@ -179,55 +179,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
         
-        // 設置 HTML5 驗證訊息為繁體中文
-        const inputs = document.querySelectorAll('input[required], textarea[required]');
-        inputs.forEach(function(input) {
-            input.addEventListener('invalid', function(e) {
-                e.preventDefault();
-                if (this.validity.valueMissing) {
-                    this.setCustomValidity('請填寫此欄位');
-                }
-            });
-            input.addEventListener('input', function() {
-                this.setCustomValidity('');
-            });
-        });
-        
-        // 數量欄位特殊處理
-        const quantityInput = document.getElementById('quantity');
-        quantityInput.addEventListener('invalid', function(e) {
-            e.preventDefault();
-            if (this.validity.valueMissing) {
-                this.setCustomValidity('請填寫數量');
-            } else if (this.validity.rangeUnderflow) {
-                this.setCustomValidity('數量至少為 1');
-            }
-        });
-        
-        // 表单验证
+        // 表单验证 - 提交前检查
         document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault(); // 先阻止提交
+            
             const storeName = document.getElementById('store_name').value.trim();
             const storeAddress = document.getElementById('store_address').value.trim();
-            const quantity = document.getElementById('quantity').value;
+            const quantity = parseInt(document.getElementById('quantity').value) || 0;
             const paymentProof = document.getElementById('payment_proof').files.length;
             
-            let errorMsg = '';
-            
+            // 逐一检查每个字段
             if (!storeName) {
-                errorMsg = '請填寫 7-11 門市名稱';
-            } else if (!storeAddress) {
-                errorMsg = '請填寫 7-11 門市地址';
-            } else if (!quantity || quantity < 1) {
-                errorMsg = '請填寫數量（至少為 1）';
-            } else if (paymentProof === 0) {
-                errorMsg = '請上傳付款證明截圖';
-            }
-            
-            if (errorMsg) {
-                e.preventDefault();
-                alert('❌ ' + errorMsg);
+                alert('❌ 請填寫 7-11 門市名稱');
+                document.getElementById('store_name').focus();
                 return false;
             }
+            
+            if (!storeAddress) {
+                alert('❌ 請填寫 7-11 門市地址');
+                document.getElementById('store_address').focus();
+                return false;
+            }
+            
+            if (quantity < 1) {
+                alert('❌ 請填寫數量（至少為 1）');
+                document.getElementById('quantity').focus();
+                return false;
+            }
+            
+            if (paymentProof === 0) {
+                alert('❌ 請上傳付款證明截圖');
+                return false;
+            }
+            
+            // 所有验证通过，提交表单
+            this.submit();
         });
     </script>
 </body>
