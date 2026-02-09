@@ -1,7 +1,7 @@
 // 載入導航欄
 (function() {
-  // 載入 navbar.html 到頁面中
-  fetch('navbar.html')
+  // 載入 navbar.php 到頁面中
+  fetch('navbar.php')
     .then(response => response.text())
     .then(data => {
       // 將導航欄插入到 body 的最前面
