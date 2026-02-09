@@ -131,6 +131,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <div class="form-group">
+                    <label class="form-label">💳 LINE Pay 付款</label>
+                    <div style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); border: 2px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
+                        <p style="color: #6ee7b7; font-size: 16px; margin-bottom: 16px; font-weight: 600;">請掃描以下 QR Code 進行付款</p>
+                        <div style="background: white; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 16px;">
+                            <img src="images/linepayqr.png" alt="LINE Pay QR Code" style="width: 200px; height: 200px; display: block;">
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 12px; margin-top: 12px;">
+                            <p style="color: #fca5a5; font-size: 14px; margin: 0;">
+                                ⚠️ <strong>重要提醒：</strong>付款完成後，請務必截圖付款證明並上傳至下方欄位
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
                     <label class="form-label">LINE Pay 付款證明 * (請上傳截圖)</label>
                     <div class="file-upload" id="file-upload-area" onclick="document.getElementById('payment_proof').click()">
                         <p style="color: #7dd3fc; margin-bottom: 8px;">📷 點擊上傳圖片</p>
