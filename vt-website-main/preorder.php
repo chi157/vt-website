@@ -102,12 +102,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="form-label" for="recipient_name">收件人姓名 *</label>
-                    <input type="text" id="recipient_name" name="recipient_name" class="form-input" required>
+                    <input type="text" id="recipient_name" name="recipient_name" class="form-input" value="<?php echo htmlspecialchars($user['username']); ?>" readonly required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="phone">聯絡電話 *</label>
-                    <input type="tel" id="phone" name="phone" class="form-input" required>
+                    <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" readonly required>
                 </div>
                 
                 <div class="form-group">
