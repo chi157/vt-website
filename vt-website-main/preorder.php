@@ -112,7 +112,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label" for="store_name">7-11 門市名稱 *</label>
-                    <input type="text" id="store_name" name="store_name" class="form-input" placeholder="例如：台北中山門市" required>
+                    <input type="text" id="store_name" name="store_name" class="form-input" placeholder="例如：台北中山門市" list="store-suggestions" required>
+                    <datalist id="store-suggestions">
+                        <!-- 常見門市建議 -->
+                    </datalist>
+                    <a href="https://emap.pcsc.com.tw/" target="_blank" style="display: inline-block; margin-top: 8px; color: #60a5fa; font-size: 14px; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#60a5fa'">
+                        🔍 開啟 7-11 門市查詢系統
+                    </a>
                 </div>
                 
                 <div class="form-group">
