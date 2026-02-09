@@ -21,67 +21,54 @@ if (isset($_GET['code'])) {
         'grant_type' => 'authorization_code'
     ];
     
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $tokenUrl);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($tokenData));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // 使用 file_get_contents 代替 cURL
+    $options = [
+        'http' => [
+            'method' => 'POST',
+            'header' => 'Content-Type: application/x-www-form-urlencoded',
+            'content' => http_build_query($tokenData),
+            'ignore_errors' => true
+        ]
+    ];
     
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    $context = stream_context_create($options);
+    $response = file_get_contents($tokenUrl, false, $context);
     
-    if ($httpCode === 200) {
+    // 檢查是否成功
+    if ($response !== false) {
         $tokenInfo = json_decode($response, true);
-        $accessToken = $tokenInfo['access_token'];
         
-        // 使用訪問令牌獲取用戶資訊
-        $userInfoUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $userInfoUrl);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $accessToken]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
-        $userInfoResponse = curl_exec($ch);
-        curl_close($ch);
-        
-        $userInfo = json_decode($userInfoResponse, true);
-        
-        if (isset($userInfo['id'])) {
-            $googleId = $userInfo['id'];
-            $email = $userInfo['email'];
-            $name = $userInfo['name'] ?? '';
-            $avatar = $userInfo['picture'] ?? '';
+        if (isset($tokenInfo['access_token'])) {
+            $accessToken = $tokenInfo['access_token'];
             
-            try {
-                // 檢查是否已有此 Google 帳號
-                $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE google_id = ?");
-                $stmt->execute([$googleId]);
-                $user = $stmt->fetch();
+            // 使用訪問令牌獲取用戶資訊
+            $userInfoUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
+            $options = [
+                'http' => [
+                    'method' => 'GET',
+                    'header' => 'Authorization: Bearer ' . $accessToken
+                ]
+            ];
+            
+            $context = stream_context_create($options);
+            $userInfoResponse = file_get_contents($userInfoUrl, false, $context);
+            
+            $userInfo = json_decode($userInfoResponse, true);
+            
+            if (isset($userInfo['id'])) {
+                $googleId = $userInfo['id'];
+                $email = $userInfo['email'];
+                $name = $userInfo['name'] ?? '';
+                $avatar = $userInfo['picture'] ?? '';
                 
-                if ($user) {
-                    // 已存在的 Google 帳號，直接登入
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['email'] = $user['email'];
-                    
-                    header('Location: preorder.php');
-                    exit;
-                } else {
-                    // 檢查電子郵件是否已被使用
-                    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-                    $stmt->execute([$email]);
-                    $existingUser = $stmt->fetch();
-                    
-                    if ($existingUser) {
-                        // 電子郵件已存在，將 Google ID 綁定到現有帳號
-                        $stmt = $pdo->prepare("UPDATE users SET google_id = ?, avatar = ?, auth_provider = 'google' WHERE email = ?");
-                        $stmt->execute([$googleId, $avatar, $email]);
-                        
-                        $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE email = ?");
-                        $stmt->execute([$email]);
+                try {
+                    // 檢查是否已有此 Google 帳號
+                    $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE google_id = ?");
+                    $stmt->execute([$googleId]);
                         $user = $stmt->fetch();
-                        
+                    
+                    if ($user) {
+                        // 已存在的 Google 帳號，直接登入
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['username'] = $user['username'];
                         $_SESSION['email'] = $user['email'];
@@ -89,38 +76,60 @@ if (isset($_GET['code'])) {
                         header('Location: preorder.php');
                         exit;
                     } else {
-                        // 新用戶，創建帳號
-                        // 從電子郵件生成用戶名
-                        $username = explode('@', $email)[0];
-                        $originalUsername = $username;
-                        $counter = 1;
+                        // 檢查電子郵件是否已被使用
+                        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+                        $stmt->execute([$email]);
+                        $existingUser = $stmt->fetch();
                         
-                        // 確保用戶名唯一
-                        while (true) {
-                            $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-                            $stmt->execute([$username]);
-                            if (!$stmt->fetch()) {
-                                break;
+                        if ($existingUser) {
+                            // 電子郵件已存在，將 Google ID 綁定到現有帳號
+                            $stmt = $pdo->prepare("UPDATE users SET google_id = ?, avatar = ?, auth_provider = 'google' WHERE email = ?");
+                            $stmt->execute([$googleId, $avatar, $email]);
+                            
+                            $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE email = ?");
+                            $stmt->execute([$email]);
+                            $user = $stmt->fetch();
+                            
+                            $_SESSION['user_id'] = $user['id'];
+                            $_SESSION['username'] = $user['username'];
+                            $_SESSION['email'] = $user['email'];
+                            
+                            header('Location: preorder.php');
+                            exit;
+                        } else {
+                            // 新用戶，創建帳號
+                            // 從電子郵件生成用戶名
+                            $username = explode('@', $email)[0];
+                            $originalUsername = $username;
+                            $counter = 1;
+                            
+                            // 確保用戶名唯一
+                            while (true) {
+                                $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+                                $stmt->execute([$username]);
+                                if (!$stmt->fetch()) {
+                                    break;
+                                }
+                                $username = $originalUsername . $counter;
+                                $counter++;
                             }
-                            $username = $originalUsername . $counter;
-                            $counter++;
+                            
+                            $stmt = $pdo->prepare("INSERT INTO users (username, email, google_id, avatar, auth_provider) VALUES (?, ?, ?, ?, 'google')");
+                            $stmt->execute([$username, $email, $googleId, $avatar]);
+                            
+                            $_SESSION['user_id'] = $pdo->lastInsertId();
+                            $_SESSION['username'] = $username;
+                            $_SESSION['email'] = $email;
+                            
+                            header('Location: preorder.php');
+                            exit;
                         }
-                        
-                        $stmt = $pdo->prepare("INSERT INTO users (username, email, google_id, avatar, auth_provider) VALUES (?, ?, ?, ?, 'google')");
-                        $stmt->execute([$username, $email, $googleId, $avatar]);
-                        
-                        $_SESSION['user_id'] = $pdo->lastInsertId();
-                        $_SESSION['username'] = $username;
-                        $_SESSION['email'] = $email;
-                        
-                        header('Location: preorder.php');
-                        exit;
                     }
+                } catch (PDOException $e) {
+                    error_log("Google OAuth Error: " . $e->getMessage());
+                    header('Location: login.php?error=oauth_failed');
+                    exit;
                 }
-            } catch (PDOException $e) {
-                error_log("Google OAuth Error: " . $e->getMessage());
-                header('Location: login.php?error=oauth_failed');
-                exit;
             }
         }
     }
