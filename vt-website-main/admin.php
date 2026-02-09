@@ -105,7 +105,7 @@ $stats = $pdo->query("
         SUM(CASE WHEN status = 'shipped' THEN 1 ELSE 0 END) as shipped,
         SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed,
         SUM(quantity) as total_quantity,
-        SUM(total_price) as total_revenue
+        SUM(quantity * 100) as total_revenue
     FROM preorders
 ")->fetch();
 ?>

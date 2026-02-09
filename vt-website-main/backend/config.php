@@ -54,7 +54,25 @@ try {
 function isLoggedIn() {
     return isset($_SESSION['user_id']) && isset($_SESSION['username']);
 }
-
+// 檢查是否已驗證信箱（本地註冊需要驗證）
+function isEmailVerified() {
+    global $pdo;
+    
+    if (!isLoggedIn()) {
+        return false;
+    }
+    
+    try {
+        $stmt = $pdo->prepare("SELECT email_verified, auth_provider FROM users WHERE id = ?");
+        $stmt->execute([$_SESSION['user_id']]);
+        $user = $stmt->fetch();
+        
+        // Google 登入不需要驗證，或已驗證的帳號
+        return $user && ($user['auth_provider'] === 'google' || $user['email_verified'] == 1);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
 // 檢查是否為管理員
 function isAdmin() {
     return isset($_SESSION['admin_id']) && isset($_SESSION['admin_username']);

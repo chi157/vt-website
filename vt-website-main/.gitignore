@@ -1,5 +1,6 @@
 # 資料庫配置（不要提交到 Git）
 backend/config.local.php
+backend/email.php
 
 # 上傳的文件
 uploads/*

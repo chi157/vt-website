@@ -1,5 +1,6 @@
 <?php
 require_once 'backend/config.php';
+require_once 'backend/email.php';
 
 if (isLoggedIn()) {
     header('Location: preorder.php');
@@ -46,18 +47,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetch()) {
                 $error = '使用者名稱或電子郵件已被使用';
             } else {
-                // 新增使用者
+                // 生成驗證碼
+                $verificationCode = generateVerificationCode();
+                $expiresAt = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+                
+                // 新增使用者（未驗證狀態）
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("INSERT INTO users (username, email, password, phone) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$username, $email, $hashed_password, $phone]);
+                $stmt = $pdo->prepare("
+                    INSERT INTO users (username, email, password, phone, email_verified, verification_code, verification_expires) 
+                    VALUES (?, ?, ?, ?, 0, ?, ?)
+                ");
+                $stmt->execute([$username, $email, $hashed_password, $phone, $verificationCode, $expiresAt]);
                 
-                // 自動登入
-                $_SESSION['user_id'] = $pdo->lastInsertId();
-                $_SESSION['username'] = $username;
-                $_SESSION['email'] = $email;
-                
-                header('Location: preorder.php');
-                exit;
+                // 發送驗證郵件
+                if (sendVerificationEmail($email, $username, $verificationCode)) {
+                    // 跳轉到驗證頁面
+                    header('Location: verify-email.php?email=' . urlencode($email));
+                    exit;
+                } else {
+                    // 發送失敗，刪除剛建立的帳號
+                    $stmt = $pdo->prepare("DELETE FROM users WHERE email = ?");
+                    $stmt->execute([$email]);
+                    $error = '發送驗證郵件失敗，請稍後再試或聯繫管理員';
+                }
             }
         } catch (PDOException $e) {
             $error = '註冊失敗，請稍後再試';
