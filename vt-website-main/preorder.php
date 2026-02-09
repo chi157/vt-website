@@ -204,6 +204,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return false;
             }
         });
+        
+        // 設置 HTML5 驗證訊息為繁體中文
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[required], textarea[required]');
+            inputs.forEach(function(input) {
+                input.addEventListener('invalid', function(e) {
+                    e.preventDefault();
+                    if (this.validity.valueMissing) {
+                        this.setCustomValidity('請填寫此欄位');
+                    }
+                });
+                input.addEventListener('input', function() {
+                    this.setCustomValidity('');
+                });
+            });
+            
+            // 數量欄位特殊處理
+            const quantityInput = document.getElementById('quantity');
+            quantityInput.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                if (this.validity.valueMissing) {
+                    this.setCustomValidity('請填寫數量');
+                } else if (this.validity.rangeUnderflow) {
+                    this.setCustomValidity('數量至少為 1');
+                }
+            });
+        });
     </script>
 </body>
 </html>
