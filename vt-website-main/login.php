@@ -7,9 +7,12 @@ if (isLoggedIn()) {
 }
 
 $error = '';
+$submitted_username = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = cleanInput($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
+    $submitted_username = $username; // 保存输入的用户名
     
     if (empty($username) || empty($password)) {
         $error = '請輸入使用者名稱和密碼';
@@ -63,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form method="POST" action="">
                     <div class="form-group">
                         <label class="form-label" for="username">使用者名稱或電子郵件</label>
-                        <input type="text" id="username" name="username" class="form-input" required>
+                        <input type="text" id="username" name="username" class="form-input" value="<?php echo htmlspecialchars($submitted_username); ?>" required>
                     </div>
                     
                     <div class="form-group">
