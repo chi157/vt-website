@@ -1,4 +1,9 @@
 <?php
+// 開啟錯誤顯示（調試用）
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'backend/config.php';
 
 // 如果已登入，重定向到預購頁面
@@ -34,6 +39,9 @@ if (isset($_GET['code'])) {
     $context = stream_context_create($options);
     $response = file_get_contents($tokenUrl, false, $context);
     
+    // 調試：記錄響應
+    error_log("Token Response: " . $response);
+    
     // 檢查是否成功
     if ($response !== false) {
         $tokenInfo = json_decode($response, true);
@@ -49,6 +57,9 @@ if (isset($_GET['code'])) {
                     'header' => 'Authorization: Bearer ' . $accessToken
                 ]
             ];
+            
+            // 調試：記錄用戶信息
+            error_log("User Info Response: " . $userInfoResponse);
             
             $context = stream_context_create($options);
             $userInfoResponse = file_get_contents($userInfoUrl, false, $context);
@@ -123,13 +134,25 @@ if (isset($_GET['code'])) {
                             
                             header('Location: preorder.php');
                             exit;
-                        }
-                    }
-                } catch (PDOException $e) {
-                    error_log("Google OAuth Error: " . $e->getMessage());
-                    header('Location: login.php?error=oauth_failed');
+                        }Database Error: " . $e->getMessage());
+                    die("資料庫錯誤: " . $e->getMessage()); // 調試用
                     exit;
                 }
+            } else {
+                error_log("Google OAuth: No user ID in response");
+                die("Google 回應中沒有用戶 ID。Response: " . print_r($userInfo, true));
+            }
+        } else {
+            error_log("Google OAuth: No access token in response");
+            die("無法獲取 access token。Response: " . $response);
+        }
+    } else {
+        error_log("Google OAuth: Failed to get token response");
+        die("無法從 Google 獲取 token");
+    }
+} else {
+    error_log("Google OAuth: No authorization code received");
+    die("未收到授權碼。GET 參數: " . print_r($_GET, true));           }
             }
         }
     }
