@@ -7,13 +7,13 @@ define('DB_PASS', '123456789');                 // 資料庫密碼（請修改�
 define('DB_CHARSET', 'utf8mb4');
 
 // 網站設定
-define('SITE_URL', 'http://localhost'); // 網站網址（正式環境請改為 https://vtwebsite.chi157.com）
+define('SITE_URL', 'https://vtwebsite.chi157.com'); // 網站網址
 define('UPLOAD_DIR', __DIR__ . '/../uploads/'); // 上傳檔案目錄
 
 // Session 設定
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 0); // 正式環境用 HTTPS 時改為 1
+ini_set('session.cookie_secure', 1); // HTTPS 使用
 
 // 建立資料庫連線
 try {
