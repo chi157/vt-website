@@ -58,11 +58,11 @@ if (isset($_GET['code'])) {
                 ]
             ];
             
-            // 調試：記錄用戶信息
-            error_log("User Info Response: " . $userInfoResponse);
-            
             $context = stream_context_create($options);
             $userInfoResponse = file_get_contents($userInfoUrl, false, $context);
+            
+            // 調試：記錄用戶信息
+            error_log("User Info Response: " . $userInfoResponse);
             
             $userInfo = json_decode($userInfoResponse, true);
             
@@ -76,7 +76,7 @@ if (isset($_GET['code'])) {
                     // 檢查是否已有此 Google 帳號
                     $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE google_id = ?");
                     $stmt->execute([$googleId]);
-                        $user = $stmt->fetch();
+                    $user = $stmt->fetch();
                     
                     if ($user) {
                         // 已存在的 Google 帳號，直接登入
@@ -134,9 +134,11 @@ if (isset($_GET['code'])) {
                             
                             header('Location: preorder.php');
                             exit;
-                        }Database Error: " . $e->getMessage());
+                        }
+                    }
+                } catch (PDOException $e) {
+                    error_log("Google OAuth Database Error: " . $e->getMessage());
                     die("資料庫錯誤: " . $e->getMessage()); // 調試用
-                    exit;
                 }
             } else {
                 error_log("Google OAuth: No user ID in response");
@@ -152,10 +154,7 @@ if (isset($_GET['code'])) {
     }
 } else {
     error_log("Google OAuth: No authorization code received");
-    die("未收到授權碼。GET 參數: " . print_r($_GET, true));           }
-            }
-        }
-    }
+    die("未收到授權碼。GET 參數: " . print_r($_GET, true));
 }
 
 // 如果沒有授權碼或出錯，重定向回登入頁面
