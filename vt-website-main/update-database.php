@@ -5,9 +5,6 @@ echo "<h1>正在更新資料庫...</h1>";
 echo "<style>body { font-family: Arial; padding: 20px; } .success { color: green; } .error { color: red; }</style>";
 
 try {
-    // 開始交易
-    $pdo->beginTransaction();
-    
     echo "<h2>檢查並添加欄位...</h2>";
     
     // 1. 修改 password 為可選
@@ -68,9 +65,6 @@ try {
         }
     }
     
-    // 提交交易
-    $pdo->commit();
-    
     echo "<h2>資料表結構：</h2>";
     $stmt = $pdo->query("DESCRIBE users");
     $columns = $stmt->fetchAll();
@@ -96,4 +90,3 @@ try {
     echo "<h2 class='error'>❌ 更新失敗</h2>";
     echo "<p>" . $e->getMessage() . "</p>";
 }
-?>
