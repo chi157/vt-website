@@ -116,10 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label" for="phone">聯絡電話 *</label>
-                    <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="請輸入手機號碼" required>
+                    <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" readonly required>
                     <?php if (empty($user['phone'])): ?>
                         <p style="color: #fbbf24; font-size: 12px; margin-top: 6px;">
-                            💡 建議先前往<a href="profile.php" style="color: #60a5fa; text-decoration: underline;">個人資料</a>頁面設定手機號碼
+                            ⚠️ 請先前往<a href="profile.php" style="color: #60a5fa; text-decoration: underline;">個人資料</a>頁面設定手機號碼
                         </p>
                     <?php endif; ?>
                 </div>
