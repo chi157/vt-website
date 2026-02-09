@@ -156,6 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <script src="script.js"></script>
     <script>
+        <?php if ($success): ?>
+        // 订购成功，显示通知并跳转
+        alert('✅ <?php echo str_replace("'", "\\'", $success); ?>');
+        window.location.href = 'keychain.html';
+        <?php endif; ?>
+        
         // 更新总金额计算
         function updateTotalPrice() {
             const quantity = parseInt(document.getElementById('quantity').value) || 1;
