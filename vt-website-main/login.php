@@ -129,33 +129,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="cloud cloud--3" aria-hidden="true"></div>
     <div class="cloud cloud--4" aria-hidden="true"></div>
     
-    <div class="form-container">
-        <div class="form-card">
-            <h1 class="form-title">登入</h1>
-            
-            <?php if ($error): ?>
-                <div class="form-error"><?php echo $error; ?></div>
-            <?php endif; ?>
-            
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label class="form-label" for="username">使用者名稱或電子郵件</label>
-                    <input type="text" id="username" name="username" class="form-input" required>
-                </div>
+    <main class="page">
+        <div class="form-container">
+            <div class="form-card">
+                <h1 class="form-title">登入</h1>
                 
-                <div class="form-group">
-                    <label class="form-label" for="password">密碼</label>
-                    <input type="password" id="password" name="password" class="form-input" required>
-                </div>
+                <?php if ($error): ?>
+                    <div class="form-error"><?php echo $error; ?></div>
+                <?php endif; ?>
                 
-                <button type="submit" class="form-button">登入</button>
-            </form>
-            
-            <div class="form-link">
-                還沒有帳號？<a href="register.php">註冊</a>
+                <form method="POST" action="">
+                    <div class="form-group">
+                        <label class="form-label" for="username">使用者名稱或電子郵件</label>
+                        <input type="text" id="username" name="username" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">密碼</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                    </div>
+                    
+                    <button type="submit" class="form-button">登入</button>
+                </form>
+                
+                <div class="form-link">
+                    還沒有帳號？<a href="register.php">註冊</a>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
     
     <script src="script.js"></script>
 </body>
