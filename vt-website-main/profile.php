@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $_POST['confirm_password'] ?? '';
     
     // 驗證
-    if (empty($username) || empty($phone)) {
-        $error = '使用者名稱和手機號碼不能為空';
+    if (empty($username)) {
+        $error = '使用者名稱不能為空';
     } else {
         try {
             // 檢查使用者名稱是否已被其他人使用
@@ -122,7 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <div class="form-group">
                         <label class="form-label" for="phone">手機號碼</label>
-                        <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone']); ?>" required>
+                        <input type="tel" id="phone" name="phone" class="form-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="請輸入手機號碼">
+                        <?php if (empty($user['phone'])): ?>
+                            <p style="color: #fbbf24; font-size: 12px; margin-top: 6px;">
+                                ⚠️ 您尚未設定手機號碼，預購時需要提供聯絡電話
+                            </p>
+                        <?php endif; ?>
                     </div>
                     
                     <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
