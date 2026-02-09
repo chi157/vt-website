@@ -153,6 +153,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label class="form-label">LINE Pay 付款證明 * (請上傳截圖)</label>
+                    
+                    <!-- 付款成功示意圖 -->
+                    <div style="background: rgba(59, 130, 246, 0.1); border: 2px dashed rgba(96, 165, 250, 0.4); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center;">
+                        <p style="color: #93c5fd; font-size: 14px; margin-bottom: 12px; font-weight: 600;">📸 付款成功後請截圖如下畫面：</p>
+                        <div style="background: rgba(26, 41, 80, 0.3); padding: 12px; border-radius: 8px; display: inline-block;">
+                            <img src="images/付款成功示意圖.png" alt="付款成功示意圖" style="max-width: 100%; height: auto; border-radius: 6px; max-height: 300px;">
+                        </div>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 8px;">請確保截圖包含付款金額、時間與交易成功訊息</p>
+                    </div>
+                    
                     <div class="file-upload" id="file-upload-area" onclick="document.getElementById('payment_proof').click()">
                         <p style="color: #7dd3fc; margin-bottom: 8px;">📷 點擊上傳圖片</p>
                         <p style="color: rgba(255,255,255,0.6); font-size: 13px;">支援 JPG、PNG 格式，最大 5MB</p>
