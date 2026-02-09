@@ -2,29 +2,28 @@
 // 檢查是否有本地配置文件（包含真實憑證）
 if (file_exists(__DIR__ . '/config.local.php')) {
     require_once __DIR__ . '/config.local.php';
-    return; // 使用本地配置，不繼續執行下面的代碼
+} else {
+    // 以下是預設配置（用於首次安裝或示例）
+    // 生產環境請複製 config.example.php 為 config.local.php 並填入實際憑證
+    
+    // 資料庫連線設定
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'vt_website');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');  // 請在 config.local.php 中設定
+    define('DB_CHARSET', 'utf8mb4');
+    
+    // 網站設定  
+    define('SITE_URL', 'https://vtwebsite.chi157.com');
+    define('UPLOAD_DIR', __DIR__ . '/../uploads/');
+    
+    // Google OAuth 設定
+    // 請到 https://console.cloud.google.com/ 建立 OAuth 2.0 憑證
+    // 然後在 config.local.php 中填入實際的憑證
+    define('GOOGLE_CLIENT_ID', 'YOUR_GOOGLE_CLIENT_ID');
+    define('GOOGLE_CLIENT_SECRET', 'YOUR_GOOGLE_CLIENT_SECRET');
+    define('GOOGLE_REDIRECT_URI', SITE_URL . '/google-callback.php');
 }
-
-// 以下是預設配置（用於首次安裝或示例）
-// 生產環境請複製 config.example.php 為 config.local.php 並填入實際憑證
-
-// 資料庫連線設定
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'vt_website');
-define('DB_USER', 'root');
-define('DB_PASS', '');  // 請在 config.local.php 中設定
-define('DB_CHARSET', 'utf8mb4');
-
-// 網站設定  
-define('SITE_URL', 'https://vtwebsite.chi157.com');
-define('UPLOAD_DIR', __DIR__ . '/../uploads/');
-
-// Google OAuth 設定
-// 請到 https://console.cloud.google.com/ 建立 OAuth 2.0 憑證
-// 然後在 config.local.php 中填入實際的憑證
-define('GOOGLE_CLIENT_ID', 'YOUR_GOOGLE_CLIENT_ID');
-define('GOOGLE_CLIENT_SECRET', 'YOUR_GOOGLE_CLIENT_SECRET');
-define('GOOGLE_REDIRECT_URI', SITE_URL . '/google-callback.php');
 
 // Session 設定
 ini_set('session.cookie_httponly', 1);
