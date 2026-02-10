@@ -28,8 +28,14 @@ if ($isLoggedIn) {
       <li class="navbar-item"><a href="url.html" class="navbar-link">各平台連結</a></li>
       
       <?php if ($isLoggedIn): ?>
-      <!-- 已登入：顯示個人資料和登出 -->
-      <li class="navbar-item"><a href="profile.php" class="navbar-link">個人資料</a></li>
+      <!-- 已登入：顯示設定選單和登出 -->
+      <li class="navbar-item navbar-dropdown">
+        <a href="#" class="navbar-link navbar-dropdown-toggle">設定 ▾</a>
+        <ul class="navbar-dropdown-menu">
+          <li><a href="profile.php" class="navbar-dropdown-link">個人資料</a></li>
+          <li><a href="my-orders.php" class="navbar-dropdown-link">訂單管理</a></li>
+        </ul>
+      </li>
       <li class="navbar-item"><a href="logout.php" class="navbar-link">登出 (<?php echo htmlspecialchars($username); ?>)</a></li>
       <?php else: ?>
       <!-- 未登入：顯示登入和註冊 -->

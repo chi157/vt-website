@@ -6,7 +6,17 @@ if (!isLoggedIn()) {
     exit;
 }
 
-$user = getCurrentUser();
+// 先載入用戶資料
+$stmt = $pdo->prepare("SELECT id, username, email, phone FROM users WHERE id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$user = $stmt->fetch();
+
+if (!$user) {
+    session_destroy();
+    header('Location: login.php');
+    exit;
+}
+
 $success = '';
 $error = '';
 
@@ -59,21 +69,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } else {
                     // 只更新基本資料
-                    $stmt = $pdo->prepare("UPDATE users SET username = ?, phone = ? WHERE id = ?");
-                    $stmt->execute([$username, $phone, $user['id']]);
-                    
-                    $_SESSION['username'] = $username;
-                    $success = '個人資料已更新';
+                    try {
+                        // 開始事務
+                        $pdo->beginTransaction();
+                        
+                        $stmt = $pdo->prepare("UPDATE users SET username = ?, phone = ? WHERE id = ?");
+                        $result = $stmt->execute([$username, $phone, $user['id']]);
+                        
+                        // 提交事務
+                        $pdo->commit();
+                        
+                        if ($result) {
+                            // 更新 Session
+                            $_SESSION['username'] = $username;
+                            
+                            // 立即從資料庫重新查詢以確認
+                            $checkStmt = $pdo->prepare("SELECT username, phone FROM users WHERE id = ?");
+                            $checkStmt->execute([$user['id']]);
+                            $updatedData = $checkStmt->fetch();
+                            
+                            if ($updatedData && $updatedData['phone'] === $phone) {
+                                $success = '個人資料已更新（電話：' . htmlspecialchars($phone) . '）';
+                            } else {
+                                $error = '更新指令執行成功，但資料庫未反映變更。資料庫電話：' . ($updatedData['phone'] ?? 'null');
+                            }
+                        } else {
+                            $error = '更新執行失敗';
+                        }
+                    } catch (Exception $e) {
+                        // 回滾事務
+                        if ($pdo->inTransaction()) {
+                            $pdo->rollBack();
+                        }
+                        throw $e;
+                    }
                 }
                 
-                // 重新獲取用戶資料
+                // 強制從資料庫重新獲取用戶資料
                 if (empty($error)) {
-                    $user = getCurrentUser();
+                    // 清除可能的快取
+                    $stmt = $pdo->prepare("SELECT id, username, email, phone FROM users WHERE id = ?");
+                    $stmt->execute([$_SESSION['user_id']]);
+                    $user = $stmt->fetch();
+                    
+                    if (!$user) {
+                        $error = '無法重新載入用戶資料';
+                    }
                 }
             }
         } catch (PDOException $e) {
-            $error = '更新失敗，請稍後再試';
+            $error = '更新失敗：' . $e->getMessage();
         }
+    }
+    
+    // 更新後重新載入用戶資料
+    if (empty($error)) {
+        $stmt = $pdo->prepare("SELECT id, username, email, phone FROM users WHERE id = ?");
+        $stmt->execute([$_SESSION['user_id']]);
+        $user = $stmt->fetch();
     }
 }
 ?>
@@ -142,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="position: relative;">
                             <input type="password" id="current_password" name="current_password" class="form-input" style="padding-right: 50px;" placeholder="若要修改密碼請輸入">
                             <button type="button" id="toggle-current-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
-                                👁️
+                                顯示密碼
                             </button>
                         </div>
                     </div>
@@ -152,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="position: relative;">
                             <input type="password" id="new_password" name="new_password" class="form-input" style="padding-right: 50px;" placeholder="若要修改密碼請輸入">
                             <button type="button" id="toggle-new-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
-                                👁️
+                                顯示密碼
                             </button>
                         </div>
                     </div>
@@ -162,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="position: relative;">
                             <input type="password" id="confirm_password" name="confirm_password" class="form-input" style="padding-right: 50px;" placeholder="再次輸入新密碼">
                             <button type="button" id="toggle-confirm-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
-                                👁️
+                                顯示密碼
                             </button>
                         </div>
                     </div>
@@ -186,10 +239,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         toggleCurrentPasswordBtn.addEventListener('click', function() {
             if (currentPasswordInput.type === 'password') {
                 currentPasswordInput.type = 'text';
-                toggleCurrentPasswordBtn.textContent = '👁️‍🗨️';
+                toggleCurrentPasswordBtn.textContent = '隱藏密碼';
             } else {
                 currentPasswordInput.type = 'password';
-                toggleCurrentPasswordBtn.textContent = '👁️';
+                toggleCurrentPasswordBtn.textContent = '顯示密碼';
             }
         });
         
@@ -200,10 +253,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         toggleNewPasswordBtn.addEventListener('click', function() {
             if (newPasswordInput.type === 'password') {
                 newPasswordInput.type = 'text';
-                toggleNewPasswordBtn.textContent = '👁️‍🗨️';
+                toggleNewPasswordBtn.textContent = '隱藏密碼';
             } else {
                 newPasswordInput.type = 'password';
-                toggleNewPasswordBtn.textContent = '👁️';
+                toggleNewPasswordBtn.textContent = '顯示密碼';
             }
         });
         
@@ -214,10 +267,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         toggleConfirmPasswordBtn.addEventListener('click', function() {
             if (confirmPasswordInput.type === 'password') {
                 confirmPasswordInput.type = 'text';
-                toggleConfirmPasswordBtn.textContent = '👁️‍🗨️';
+                toggleConfirmPasswordBtn.textContent = '隱藏密碼';
             } else {
                 confirmPasswordInput.type = 'password';
-                toggleConfirmPasswordBtn.textContent = '👁️';
+                toggleConfirmPasswordBtn.textContent = '顯示密碼';
             }
         });
     </script>

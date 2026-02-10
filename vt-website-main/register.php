@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="position: relative;">
                         <input type="password" id="password" name="password" class="form-input" style="padding-right: 50px;" required>
                         <button type="button" id="toggle-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
-                            👁️
+                            顯示密碼
                         </button>
                     </div>
                 </div>
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="position: relative;">
                         <input type="password" id="confirm_password" name="confirm_password" class="form-input" style="padding-right: 50px;" required>
                         <button type="button" id="toggle-confirm-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 20px; padding: 5px; color: rgba(255,255,255,0.6); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
-                            👁️
+                            顯示密碼
                         </button>
                     </div>
                 </div>
@@ -172,10 +172,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         togglePasswordBtn.addEventListener('click', function() {
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                togglePasswordBtn.textContent = '👁️‍🗨️';
+                togglePasswordBtn.textContent = '隱藏密碼';
             } else {
                 passwordInput.type = 'password';
-                togglePasswordBtn.textContent = '👁️';
+                togglePasswordBtn.textContent = '顯示密碼';
             }
         });
         
@@ -186,10 +186,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         toggleConfirmPasswordBtn.addEventListener('click', function() {
             if (confirmPasswordInput.type === 'password') {
                 confirmPasswordInput.type = 'text';
-                toggleConfirmPasswordBtn.textContent = '👁️‍🗨️';
+                toggleConfirmPasswordBtn.textContent = '隱藏密碼';
             } else {
                 confirmPasswordInput.type = 'password';
-                toggleConfirmPasswordBtn.textContent = '👁️';
+                toggleConfirmPasswordBtn.textContent = '顯示密碼';
             }
         });
     </script>

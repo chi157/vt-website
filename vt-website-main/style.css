@@ -894,6 +894,54 @@ body::after {
   color: var(--primary);
 }
 
+/* 下拉選單 */
+.navbar-dropdown {
+  position: relative;
+}
+
+.navbar-dropdown-toggle {
+  cursor: pointer;
+}
+
+.navbar-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(26, 41, 80, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 8px;
+  min-width: 160px;
+  padding: 8px 0;
+  margin-top: 4px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-dropdown:hover .navbar-dropdown-menu {
+  display: block;
+}
+
+.navbar-dropdown-menu li {
+  list-style: none;
+}
+
+.navbar-dropdown-link {
+  display: block;
+  color: var(--text);
+  text-decoration: none;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbar-dropdown-link:hover {
+  background: rgba(58, 123, 213, 0.3);
+  color: var(--primary);
+}
+
 /* 漢堡選單按鈕 */
 .navbar-toggle {
   display: none;
