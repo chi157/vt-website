@@ -26,6 +26,7 @@ body {
   margin: 0;
   padding-top: var(--navbar-height); /* 為導航欄留出空間 */
   font-family: "Segoe UI", "Noto Sans TC", system-ui, -apple-system, sans-serif;
+  font-size: 22px; /* 增加基礎字體大小 */
   /* 夜空漸層 + 雲朵光暈 */
   background-image:
     radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.04) 0%, transparent 35%),
