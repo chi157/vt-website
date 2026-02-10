@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = $uploadResult['message'];
         } else {
             try {
-                $total_price = 160 * $quantity; // 100 + 60 運費
+                $total_price = (100 * $quantity) + 60; // 商品總價 + 固定運費 60
                 
                 $stmt = $pdo->prepare("
                     INSERT INTO preorders (user_id, username, email, phone, recipient_name, store_name, store_address, quantity, total_price, payment_proof, notes) 

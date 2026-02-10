@@ -110,7 +110,7 @@ function getStatusColor($status) {
             <?php endif; ?>
             
             <?php if (empty($orders)): ?>
-                <div style="background: rgba(26, 41, 80, 0.6); border: 1px solid rgba(125, 211, 252, 0.2); border-radius: 12px; padding: 60px 20px; text-align: center;">
+                <div style="background: linear-gradient(180deg, rgba(35, 58, 94, 0.95) 0%, rgba(46, 67, 114, 0.95) 100%); border: 1.5px solid rgba(58, 123, 213, 0.5); border-radius: 20px; padding: 60px 20px; text-align: center; backdrop-filter: blur(15px); box-shadow: 0 18px 40px rgba(10, 24, 51, 0.4);">
                     <div style="font-size: 64px; margin-bottom: 16px;">📭</div>
                     <h2 style="color: #7dd3fc; font-size: 24px; margin-bottom: 12px;">尚無訂單</h2>
                     <p style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">您還沒有任何預購訂單</p>
@@ -121,7 +121,7 @@ function getStatusColor($status) {
             <?php else: ?>
                 <div style="display: grid; gap: 20px;">
                     <?php foreach ($orders as $order): ?>
-                        <div style="background: rgba(26, 41, 80, 0.6); border: 1px solid rgba(125, 211, 252, 0.2); border-radius: 12px; padding: 24px;">
+                        <div style="background: linear-gradient(180deg, rgba(35, 58, 94, 0.95) 0%, rgba(46, 67, 114, 0.95) 100%); border: 1.5px solid rgba(58, 123, 213, 0.5); border-radius: 20px; padding: 24px; backdrop-filter: blur(15px); box-shadow: 0 18px 40px rgba(10, 24, 51, 0.4);">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
                                 <div style="display: flex; align-items: center; gap: 24px; flex: 1; flex-wrap: wrap;">
                                     <div>
