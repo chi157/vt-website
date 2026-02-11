@@ -850,10 +850,12 @@ body::after {
   font-weight: bold;
   color: var(--text);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .navbar-logo-img {
@@ -1156,12 +1158,13 @@ body::after {
 /* 響應式設計 - 手機 */
 @media (max-width: 480px) {
   .navbar-logo {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    gap: 6px;
   }
   
   .navbar-logo-img {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
 
   .navbar-container {
@@ -1171,6 +1174,19 @@ body::after {
   .navbar-link {
     padding: 0.75rem;
     font-size: 0.95rem;
+  }
+}
+
+/* 中等螢幕尺寸也需要縮小 */
+@media (max-width: 768px) and (min-width: 481px) {
+  .navbar-logo {
+    font-size: 1.2rem;
+    gap: 8px;
+  }
+  
+  .navbar-logo-img {
+    width: 35px;
+    height: 35px;
   }
 }
 

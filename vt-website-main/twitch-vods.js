@@ -4,7 +4,7 @@ const TWITCH_VIDEOS_URL = `https://www.twitch.tv/${TWITCH_CHANNEL}/videos?filter
 
 // 預設 VOD IDs（如果 localStorage 沒有設定的話）
 const DEFAULT_VOD_IDS = [
-  '2691280220',
+  '2693525200',
 ];
 
 function displayTwitchPlayer() {

@@ -24,6 +24,7 @@ if ($isLoggedIn) {
       <li class="navbar-item"><a href="about.html" class="navbar-link">自我介紹</a></li>
       <li class="navbar-item"><a href="course.html" class="navbar-link">程式設計課程</a></li>
       <li class="navbar-item"><a href="keychain.html" class="navbar-link">鑰匙圈預購</a></li>
+      <li class="navbar-item"><a href="subscriber-benefits.html" class="navbar-link">訂閱者專屬福利</a></li>
       <li class="navbar-item"><a href="donate.html" class="navbar-link">加班台規則與說明</a></li>
       <li class="navbar-item"><a href="url.html" class="navbar-link">各平台連結</a></li>
       
@@ -38,9 +39,8 @@ if ($isLoggedIn) {
       </li>
       <li class="navbar-item"><a href="logout.php" class="navbar-link">登出 (<?php echo htmlspecialchars($username); ?>)</a></li>
       <?php else: ?>
-      <!-- 未登入：顯示登入和註冊 -->
+      <!-- 未登入：顯示登入 -->
       <li class="navbar-item"><a href="login.php" class="navbar-link">登入</a></li>
-      <li class="navbar-item"><a href="register.php" class="navbar-link">註冊</a></li>
       <?php endif; ?>
     </ul>
   </div>
