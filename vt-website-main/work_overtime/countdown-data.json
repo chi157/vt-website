@@ -7,6 +7,6 @@
     "showHours": true,
     "showMinutes": true,
     "showSeconds": true,
-    "isPaused": true,
-    "remainingMs": 10758385
+    "isPaused": false,
+    "targetTimestamp": 1770947475793
 }

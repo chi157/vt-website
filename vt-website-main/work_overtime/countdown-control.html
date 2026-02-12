@@ -769,14 +769,16 @@
           delete config.targetDate;
 
           localStorage.setItem('countdownConfig', JSON.stringify(config));
-          await saveToServer(config);
-
-          // 切換按鈕顯示
-          document.getElementById('pauseBtn').style.display = 'none';
-          document.getElementById('resumeBtn').style.display = 'inline-block';
-
-          showNotification('⏸️ 倒數已暫停！');
-          console.log('⏸️ 暫停倒數，剩餘時間:', Math.floor(remainingMs / 60000), '分鐘');
+          const serverSaved = await saveToServer(config);
+          if (serverSaved) {
+            // 切換按鈕顯示
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('resumeBtn').style.display = 'inline-block';
+            showNotification('⏸️ 倒數已暫停！');
+            console.log('⏸️ 暫停倒數，剩餘時間:', Math.floor(remainingMs / 60000), '分鐘');
+          } else {
+            showNotification('❌ 暫停設定儲存失敗', 'error');
+          }
         } catch (e) {
           showNotification('❌ 暫停失敗！', 'error');
           console.error(e);
@@ -802,11 +804,15 @@
           config.isPaused = false;
           delete config.remainingMs;
           localStorage.setItem('countdownConfig', JSON.stringify(config));
-          await saveToServer(config);
-          document.getElementById('pauseBtn').style.display = 'inline-block';
-          document.getElementById('resumeBtn').style.display = 'none';
-          showNotification('▶️ 倒數已繼續！');
-          console.log('▶️ 繼續倒數，目標時間:', new Date(targetTimestamp).toLocaleString('zh-TW'));
+          const serverSaved = await saveToServer(config);
+          if (serverSaved) {
+            document.getElementById('pauseBtn').style.display = 'inline-block';
+            document.getElementById('resumeBtn').style.display = 'none';
+            showNotification('▶️ 倒數已繼續！');
+            console.log('▶️ 繼續倒數，目標時間:', new Date(targetTimestamp).toLocaleString('zh-TW'));
+          } else {
+            showNotification('❌ 繼續設定儲存失敗', 'error');
+          }
         } catch (e) {
           showNotification('❌ 繼續失敗！', 'error');
           console.error(e);
