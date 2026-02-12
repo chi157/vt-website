@@ -172,35 +172,21 @@
         box-shadow: 0 10px 30px rgba(125, 211, 252, 0.4);
       }
 
-      @media (max-width: 768px) {
-        .countdown-title {
-          font-size: 2rem;
-        }
+      .add-time-animation {
+        position: absolute;
+        color: #7dd3fc;
+        font-size: 2rem;
+        font-weight: bold;
+        pointer-events: none;
+        animation: addTimeAnim 2s ease-out forwards;
+        z-index: 10;
+      }
 
-        .countdown-message {
-          font-size: 1.2rem;
-        }
-
-        .countdown-display {
-          gap: 1rem;
-        }
-
-        .time-unit {
-          min-width: 100px;
-          padding: 1.5rem 1rem;
-        }
-
-        .time-value {
-          font-size: 3rem;
-        }
-
-        .time-label {
-          font-size: 0.8rem;
-        }
-
-        .end-message {
-          font-size: 2rem;
-        }
+      @keyframes addTimeAnim {
+        0% { transform: translateY(-50px); opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { transform: translateY(0); opacity: 0; }
       }
     </style>
   </head>
@@ -230,11 +216,12 @@
       let targetTime = null;
       let config = null;
       let lastServerSync = 0;
+      let lastDays = null, lastHours = null, lastMinutes = null, lastSeconds = null;
       
       // 從伺服器載入設定
       async function loadFromServer() {
         try {
-          const response = await fetch('get-countdown.php?t=' + Date.now());
+          const response = await fetch('get-countdown.php?t=' + Date.now(), { cache: 'no-cache' });
           const result = await response.json();
           
           if (result.success && result.data) {
@@ -327,9 +314,7 @@
         // 計算目標時間（使用時間戳記）
         if (config.targetTimestamp) {
           targetTime = config.targetTimestamp;
-          console.log('🎯 目標時間:', new Date(targetTime).toLocaleString('zh-TW'));
-          console.log('⏰ 現在時間:', new Date().toLocaleString('zh-TW'));
-          console.log('⏱️ 剩餘時間:', Math.floor((targetTime - Date.now()) / 60000), '分鐘');
+          console.log('🎯 設定目標時間:', new Date(targetTime).toLocaleString('zh-TW'), 'isPaused:', config.isPaused);
         } else if (config.targetDate) {
           // 相容舊格式
           targetTime = new Date(config.targetDate).getTime();
@@ -351,6 +336,24 @@
         
         // 啟動定時器
         startCountdownInterval();
+        
+        // 定期從伺服器同步設定（每 0.5 秒檢查一次）
+        setInterval(async () => {
+          const serverConfig = await loadFromServer();
+          if (serverConfig && 
+              (serverConfig.targetTimestamp !== config.targetTimestamp || 
+               serverConfig.isPaused !== config.isPaused ||
+               serverConfig.remainingMs !== config.remainingMs)) {
+            console.log('⚡ 收到伺服器推送更新:', serverConfig);
+            config = {
+              ...countdownConfig,
+              ...serverConfig,
+              theme: countdownConfig.theme
+            };
+            applyConfigStyles();
+            updateCountdown(); // 立即更新顯示
+          }
+        }, 500);
       });
 
       // 更新倒數計時器
@@ -394,12 +397,32 @@
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+        // 檢查是否有增加，顯示動畫
+        if (lastDays !== null && days > lastDays) {
+          showAddTimeAnimation("+" + (days - lastDays), "days-unit");
+        }
+        if (lastHours !== null && hours > lastHours) {
+          showAddTimeAnimation("+" + (hours - lastHours), "hours-unit");
+        }
+        if (lastMinutes !== null && minutes > lastMinutes) {
+          showAddTimeAnimation("+" + (minutes - lastMinutes), "minutes-unit");
+        }
+        if (lastSeconds !== null && seconds > lastSeconds) {
+          showAddTimeAnimation("+" + (seconds - lastSeconds), "seconds-unit");
+        }
+
+        // 更新上次的值
+        lastDays = days;
+        lastHours = hours;
+        lastMinutes = minutes;
+        lastSeconds = seconds;
+
         // 建立顯示
         let html = '';
         
         if (config.showDays && (days > 0 || config.showDays === true)) {
           html += `
-            <div class="time-unit">
+            <div class="time-unit" id="days-unit">
               <div class="time-value">${days.toString().padStart(2, '0')}</div>
               <div class="time-label">天</div>
             </div>
@@ -408,7 +431,7 @@
         
         if (config.showHours) {
           html += `
-            <div class="time-unit">
+            <div class="time-unit" id="hours-unit">
               <div class="time-value">${hours.toString().padStart(2, '0')}</div>
               <div class="time-label">時</div>
             </div>
@@ -417,7 +440,7 @@
         
         if (config.showMinutes) {
           html += `
-            <div class="time-unit">
+            <div class="time-unit" id="minutes-unit">
               <div class="time-value">${minutes.toString().padStart(2, '0')}</div>
               <div class="time-label">分</div>
             </div>
@@ -426,7 +449,7 @@
         
         if (config.showSeconds) {
           html += `
-            <div class="time-unit">
+            <div class="time-unit" id="seconds-unit">
               <div class="time-value">${seconds.toString().padStart(2, '0')}</div>
               <div class="time-label">秒</div>
             </div>
@@ -437,6 +460,29 @@
         
         // 調整側邊圖片高度與計時器框框相同
         adjustSideImagesHeight();
+      }
+
+      // 顯示加時間動畫
+      function showAddTimeAnimation(text, unitId) {
+        const unitElement = document.getElementById(unitId);
+        if (!unitElement) return;
+        
+        const valueElement = unitElement.querySelector('.time-value');
+        if (!valueElement) return;
+        
+        const anim = document.createElement('span');
+        anim.textContent = text;
+        anim.className = 'add-time-animation';
+        anim.style.left = (valueElement.offsetLeft + valueElement.offsetWidth / 2 - 20) + 'px';
+        anim.style.top = (valueElement.offsetTop - 50) + 'px';
+        
+        document.querySelector('.countdown-display').appendChild(anim);
+        
+        setTimeout(() => {
+          if (anim.parentNode) {
+            anim.parentNode.removeChild(anim);
+          }
+        }, 2000);
       }
 
       // 調整側邊圖片高度
@@ -468,22 +514,6 @@
         }, 1000);
       }
 
-      // 定期從伺服器同步設定（每 1 秒檢查一次）
-      setInterval(async () => {
-        const serverConfig = await loadFromServer();
-        if (serverConfig && 
-            (serverConfig.targetTimestamp !== config.targetTimestamp || 
-             serverConfig.isPaused !== config.isPaused ||
-             serverConfig.remainingMs !== config.remainingMs)) {
-          console.log('⚡ 偵測到伺服器設定變更，重新載入...');
-          config = {
-            ...countdownConfig,
-            ...serverConfig,
-            theme: countdownConfig.theme
-          };
-          applyConfigStyles();
-        }
-      }, 1000);
     </script>
   </body>
 </html>
