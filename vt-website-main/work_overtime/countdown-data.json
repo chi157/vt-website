@@ -1,12 +1,12 @@
 {
     "mode": "timestamp",
+    "targetTimestamp": 1770948229485,
     "title": "加班台倒數計時",
-    "message": "距離下班還有",
-    "endMessage": "🎉 下班囉！",
+    "message": "距離開播還有",
+    "endMessage": "🎉 開播時間到！",
     "showDays": true,
     "showHours": true,
     "showMinutes": true,
     "showSeconds": true,
-    "isPaused": false,
-    "targetTimestamp": 1770947475793
+    "isPaused": false
 }

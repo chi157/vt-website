@@ -623,7 +623,9 @@
           showDays: document.getElementById('showDays').checked,
           showHours: document.getElementById('showHours').checked,
           showMinutes: document.getElementById('showMinutes').checked,
-          showSeconds: document.getElementById('showSeconds').checked
+          showSeconds: document.getElementById('showSeconds').checked,
+          isPaused: true,
+          remainingMs: minutes * 60 * 1000
         };
         localStorage.setItem('countdownConfig', JSON.stringify(config));
         
