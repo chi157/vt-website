@@ -1,18 +1,18 @@
 // 載入導航欄
 (function() {
-  // 自動偵測 navbar.php 的路徑
-  // 如果在子目錄中（例如 courses/），需要使用 ../navbar.php
-  let navbarPath = 'navbar.php';
+  // 自動偵測 navbar 的路徑
+  // 如果在子目錄中（例如 work_overtime/），需要使用 ../navbar.html
+  let navbarPath = 'navbar.html';
   const currentPath = window.location.pathname;
   let isInSubdir = false;
   
   // 檢查是否在子目錄中
-  if (currentPath.includes('/courses/')) {
-    navbarPath = '../navbar.php';
+  if (currentPath.includes('/work_overtime/') || currentPath.includes('/courses/')) {
+    navbarPath = '../navbar.html';
     isInSubdir = true;
   }
   
-  // 載入 navbar.php 到頁面中
+  // 載入 navbar.html 到頁面中
   fetch(navbarPath)
     .then(response => response.text())
     .then(data => {

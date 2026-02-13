@@ -8,6 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 載入樣式和導航欄 -->
+    <link rel="stylesheet" href="../style.css" />
+    <script src="../navbar.js"></script>
+    
     <style>
       * {
         margin: 0;
@@ -25,6 +30,7 @@
         justify-content: center;
         align-items: center;
         padding: 20px;
+        padding-top: calc(var(--navbar-height) + 20px); /* 為導航欄留出空間 */
         background-image: 
           radial-gradient(circle at 20% 50%, rgba(125, 211, 252, 0.1) 0%, transparent 50%),
           radial-gradient(circle at 80% 80%, rgba(192, 132, 252, 0.1) 0%, transparent 50%);
@@ -217,11 +223,12 @@
       let config = null;
       let lastServerSync = 0;
       let lastDays = null, lastHours = null, lastMinutes = null, lastSeconds = null;
+      let lastRemainingMs = null;
       
       // 從伺服器載入設定
       async function loadFromServer() {
         try {
-          const response = await fetch('get-countdown.php?t=' + Date.now(), { cache: 'no-cache' });
+          const response = await fetch('/get-countdown?t=' + Date.now(), { cache: 'no-cache' });
           const result = await response.json();
           
           if (result.success && result.data) {
@@ -364,8 +371,23 @@
           const remainingMinutes = Math.floor(config.remainingMs / 60000);
           const remainingSeconds = Math.floor((config.remainingMs % 60000) / 1000);
           
+          // 檢查是否有增加時間，顯示動畫
+          if (lastRemainingMs !== null && config.remainingMs > lastRemainingMs) {
+            const addedMs = config.remainingMs - lastRemainingMs;
+            const addedMinutes = Math.floor(addedMs / 60000);
+            const addedSeconds = Math.floor((addedMs % 60000) / 1000);
+            
+            // 顯示加時動畫（使用分鐘為單位）
+            if (addedMinutes > 0) {
+              showAddTimeAnimation("+" + addedMinutes, "paused-display");
+            }
+          }
+          
+          // 更新上次的值
+          lastRemainingMs = config.remainingMs;
+          
           document.getElementById('countdownDisplay').innerHTML = 
-            `<div class="end-message" style="font-size: 2rem; opacity: 0.7;">
+            `<div class="end-message" style="font-size: 2rem; opacity: 0.7;" id="paused-display">
               ⏸️ 已暫停<br>
               <span style="font-size: 1.5rem;">剩餘 ${remainingMinutes} 分 ${remainingSeconds} 秒</span>
             </div>`;
@@ -467,7 +489,7 @@
         const unitElement = document.getElementById(unitId);
         if (!unitElement) return;
         
-        const valueElement = unitElement.querySelector('.time-value');
+        const valueElement = unitElement.querySelector('.time-value') || unitElement;
         if (!valueElement) return;
         
         const anim = document.createElement('span');

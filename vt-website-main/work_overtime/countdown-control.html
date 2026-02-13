@@ -6,11 +6,16 @@
     <title>倒數計時器控制面板 - 柒柒 chi</title>
     <link rel="icon" type="image/png" href="../images/頭貼%20-%20圓形.png" />
     <link rel="stylesheet" href="../style.css" />
+    
+    <!-- 載入導航欄 -->
+    <script src="../navbar.js"></script>
+    
     <style>
       body {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         min-height: 100vh;
         padding: 2rem;
+        padding-top: calc(var(--navbar-height) + 2rem); /* 為導航欄留出空間 */
       }
 
       .control-panel {
@@ -438,19 +443,41 @@
       }
 
       // 增加時間（分鐘）
-      function addTime(minutes) {
-        const saved = localStorage.getItem('countdownConfig');
-        if (!saved) {
+      async function addTime(minutes) {
+        // 優先從伺服器載入當前設定
+        let config = null;
+        try {
+          const response = await fetch('get-countdown.php?t=' + Date.now(), { cache: 'no-cache' });
+          const result = await response.json();
+          if (result.success && result.data) {
+            config = result.data;
+            console.log('☁️ 從伺服器載入設定用於加時:', config);
+          }
+        } catch (e) {
+          console.error('❌ 無法從伺服器載入設定:', e);
+        }
+
+        // 如果伺服器載入失敗，嘗試 localStorage
+        if (!config) {
+          const saved = localStorage.getItem('countdownConfig');
+          if (saved) {
+            config = JSON.parse(saved);
+            console.log('💾 使用 localStorage 設定用於加時');
+          }
+        }
+
+        if (!config) {
           showNotification('⚠️ 請先設定並儲存倒數時間！', 'warning');
           return;
         }
 
         try {
-          const config = JSON.parse(saved);
-          
           // 計算新的目標時間
           let currentTarget;
-          if (config.targetTimestamp) {
+          if (config.isPaused && config.remainingMs) {
+            // 如果是暫停狀態，使用 remainingMs
+            currentTarget = Date.now() + config.remainingMs;
+          } else if (config.targetTimestamp) {
             currentTarget = config.targetTimestamp;
           } else if (config.targetDate) {
             currentTarget = new Date(config.targetDate).getTime();
@@ -471,17 +498,21 @@
           // 更新設定
           config.mode = 'timestamp';
           config.targetTimestamp = newTargetTimestamp;
+          
+          // 如果是暫停狀態，需要更新 remainingMs
+          if (config.isPaused) {
+            config.remainingMs = newTargetTimestamp - Date.now();
+            console.log('⏸️ 更新暫停剩餘時間:', config.remainingMs, 'ms');
+          }
+          
           delete config.targetDate;
           delete config.secondsFromNow;
           
-          // 儲存
+          // 儲存到 localStorage
           localStorage.setItem('countdownConfig', JSON.stringify(config));
           
           // 同步到伺服器
           saveToServer(config);
-          
-          // 因為現在是倒數時長模式，我們不需要更新表單上的日期時間欄位
-          // 只需要通知用戶即可
           
           const msg = minutes > 0 ? `+${minutes}` : minutes;
           showNotification(`✅ 已增加 ${msg} 分鐘！`);
@@ -565,7 +596,7 @@
       // 儲存設定到伺服器
       async function saveToServer(config) {
         try {
-          const response = await fetch('save-countdown.php', {
+          const response = await fetch('/save-countdown', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -585,8 +616,6 @@
         } catch (e) {
           console.error('❌ 無法連接到伺服器:', e);
           return false;
-        }
-      }
 
       // 儲存設定
       async function saveSettings() {
